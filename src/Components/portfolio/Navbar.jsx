@@ -1,10 +1,8 @@
-// Navbar.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon, Terminal } from 'lucide-react';
-import { createPageUrl } from '@/utils';
 import { Button } from '@/Components/ui/button';
 import { USFlag, BrazilFlag } from '@/Components/ui/FlagIcon';
 import { usePortfolioData } from '@/content/usePortfolioData';
@@ -18,14 +16,15 @@ export default function Navbar({ theme, toggleTheme }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage || i18n.language || 'en';
   const setLang = (next) => i18n.changeLanguage(next);
-const location = useLocation();
+  const location = useLocation();
+
   const navItems = [
-    { name: t('navbar.home'), page: 'Home' },
-    { name: t('navbar.projects'), page: 'Projects' },
-    { name: t('navbar.skills'), page: 'Skills' },
-    { name: t('navbar.about'), page: 'About' },
-    { name: t('navbar.blog'), page: 'Blog' },
-    { name: t('navbar.contact'), page: 'Contact' },
+    { name: t('navbar.home'), page: 'Home', path: '/' },
+    { name: t('navbar.projects'), page: 'Projects', path: '/projects' },
+    { name: t('navbar.skills'), page: 'Skills', path: '/skills' },
+    { name: t('navbar.about'), page: 'About', path: '/about' },
+    { name: t('navbar.blog'), page: 'Blog', path: '/blog' },
+    { name: t('navbar.contact'), page: 'Contact', path: '/contact' },
   ];
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const location = useLocation();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ✅ Set favicon dynamically from brand.favicon (and title)
+  // Set favicon dynamically from brand.favicon (and title)
   useEffect(() => {
     if (!brand?.favicon) return;
 
@@ -50,18 +49,29 @@ const location = useLocation();
 
     setIcon('icon');
     setIcon('shortcut icon');
-    setIcon('apple-touch-icon'); // nice to have for iOS/bookmarks
+    setIcon('apple-touch-icon');
 
     if (brand?.siteTitle) document.title = brand.siteTitle;
   }, [brand?.favicon, brand?.siteTitle]);
 
-  const isActive = (page) => {
+  const isActive = (path) => {
     const currentPath = location.pathname;
-    if (page === 'Home') return currentPath === '/' || currentPath === '';
-    return currentPath.toLowerCase().includes(page.toLowerCase());
+
+    if (path === '/') {
+      return currentPath === '/' || currentPath === '';
+    }
+
+    return currentPath === path || currentPath.startsWith(`${path}/`);
   };
 
-  const showImageLogo = !!brand?.navbarIcon && !logoFailed;
+  const logoSrc =
+    theme === 'dark' ? brand?.navbarIconDark : brand?.navbarIconLight;
+
+  const showImageLogo = !!logoSrc && !logoFailed;
+
+  useEffect(() => {
+    setLogoFailed(false);
+  }, [logoSrc]);
 
   return (
     <>
@@ -76,20 +86,18 @@ const location = useLocation();
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <Link
-              to={createPageUrl('Home')}
+              to="/"
               className="flex items-center gap-3 text-slate-900 dark:text-white font-bold text-xl"
               aria-label={brand?.siteTitle ? `${brand.siteTitle} home` : 'Home'}
             >
               {showImageLogo ? (
-                // ✅ PURE IMAGE (no wrapper background / no container)
                 <img
-                  src={brand.navbarIcon}
+                  src={logoSrc}
                   alt={`${brand?.siteTitle || 'Logo'} logo`}
-                  className="block h-18 md:h-20 lg:h-24 w-auto object-contain"
+                  className="block h-10 md:h-12 lg:h-12 w-auto object-contain"
                   onError={() => setLogoFailed(true)}
                 />
               ) : (
-                // Fallback icon if no image or image fails
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center">
                   <Terminal className="w-5 h-5 text-white" />
                 </div>
@@ -105,15 +113,15 @@ const location = useLocation();
               {navItems.map((item) => (
                 <Link
                   key={item.page}
-                  to={createPageUrl(item.page)}
+                  to={item.path}
                   className={`relative px-4 py-2 text-sm font-medium transition-colors ${
-                    isActive(item.page)
+                    isActive(item.path)
                       ? 'text-cyan-600 dark:text-cyan-400'
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {item.name}
-                  {isActive(item.page) && (
+                  {isActive(item.path) && (
                     <motion.div
                       layoutId="navbar-indicator"
                       className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-full"
@@ -125,7 +133,7 @@ const location = useLocation();
 
             {/* Right side */}
             <div className="flex items-center gap-2">
-              {/* Language toggle - desktop (flag buttons) */}
+              {/* Language toggle - desktop */}
               <div className="hidden md:flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
                 <button
                   onClick={() => lang === 'pt' && setLang('en')}
@@ -216,10 +224,10 @@ const location = useLocation();
                   {navItems.map((item) => (
                     <Link
                       key={item.page}
-                      to={createPageUrl(item.page)}
+                      to={item.path}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                        isActive(item.page)
+                        isActive(item.path)
                           ? 'bg-gradient-to-r from-cyan-500/10 to-teal-500/10 text-cyan-600 dark:text-cyan-400'
                           : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}

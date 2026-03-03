@@ -3,8 +3,9 @@
 // ============================================
 
 export const brand = {
-  navbarIcon: "/Dataverse Logo.png",
-  favicon: "https://i.imgur.com/OaZbUGJ.png",
+  navbarIconLight: `${import.meta.env.BASE_URL}portfolio-logo-dark.png`,
+  navbarIconDark: `${import.meta.env.BASE_URL}portfolio-logo-light.png`,
+  favicon: `${import.meta.env.BASE_URL}portfolio-logo-dark.png`,
   logoText: "D",
 };
 
