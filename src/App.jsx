@@ -12,7 +12,7 @@ import Contact from '@/Pages/Contact.jsx';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/personal-portfolio">
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -26,4 +26,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-
