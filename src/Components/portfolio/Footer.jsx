@@ -38,7 +38,7 @@ export default function Footer() {
                 { key: 'Home', label: t('navbar.home') },
                 { key: 'Projects', label: t('navbar.projects') },
                 { key: 'About', label: t('navbar.about') },
-                { key: 'Blog', label: t('navbar.blog') },
+                // { key: 'Blog', label: t('navbar.blog') },
                 { key: 'Contact', label: t('navbar.contact') }
               ].map((item) => (
                 <Link

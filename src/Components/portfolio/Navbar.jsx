@@ -23,7 +23,7 @@ export default function Navbar({ theme, toggleTheme }) {
     { name: t('navbar.projects'), page: 'Projects', path: '/projects' },
     { name: t('navbar.skills'), page: 'Skills', path: '/skills' },
     { name: t('navbar.about'), page: 'About', path: '/about' },
-    { name: t('navbar.blog'), page: 'Blog', path: '/blog' },
+    // { name: t('navbar.blog'), page: 'Blog', path: '/blog' },
     { name: t('navbar.contact'), page: 'Contact', path: '/contact' },
   ];
 
