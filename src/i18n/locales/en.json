@@ -1,0 +1,310 @@
+{
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "portuguese": "Português",
+    "close": "Close",
+    "clear": "Clear",
+    "clearFilters": "Clear filters",
+    "contact": "Contact",
+    "viewAll": "View all",
+    "at": "at"
+  },
+  "skillCategories": {
+    "Programming": "Programming",
+    "Data Engineering": "Data Engineering",
+    "Databases": "Databases",
+    "Machine Learning": "Machine Learning",
+    "Deep Learning": "Deep Learning",
+    "Generative AI": "Generative AI",
+    "Visualization & BI": "Visualization & BI",
+    "Cloud & MLOps": "Cloud & MLOps"
+  },
+  "skillLevels": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert"
+  },
+  "skillsLoopStrip": {
+    "kicker": "Toolkit",
+    "title": "Skills - quick scan",
+    "subtitle": "Drag the tape. For details and full stack context, open the Skills page.",
+    "cta": "View Skills",
+    "openSkills": "Open Skills →",
+    "hint": {
+      "hovered": "← Drag to scroll →",
+      "idle": "Hover to pause • Drag to explore"
+    },
+    "aria": {
+      "viewSkills": "View Skills page",
+      "openSkillsCard": "Open Skills page (from {{name}})"
+    },
+    "titles": {
+      "viewSkills": "View Skills",
+      "openSkillsCard": "Open Skills"
+    }
+  },
+  "skills": {
+    "badge": "Technical Arsenal",
+    "title": "Skills & Technologies",
+    "headline": "Skills, tools, and the proof behind them.",
+    "lede": "Not a checklist - a curated index of what I actually use to ship my work, with projects as evidence.",
+    "subtitle": "A comprehensive overview of the tools and technologies I use to build production ML systems",
+    "searchPlaceholder": "Search skills...",
+    "categorySelectAria": "Select skill category",
+    "search": {
+      "clearAria": "Clear search"
+    },
+    "filters": {
+      "all": "All Skills",
+      "allLong": "All Skills"
+    },
+    "categoriesLabel": "CATEGORIES",
+    "categoryItemCount_one": "{{count}} item in this capability cluster.",
+    "categoryItemCount_other": "{{count}} items in this capability cluster.",
+    "clickHint": "Click a skill for the write-up",
+    "projectsCountLabel_one": "{{count}} project",
+    "projectsCountLabel_other": "{{count}} projects",
+    "usedInProjectsCount_one": "Used in {{count}} project",
+    "usedInProjectsCount_other": "Used in {{count}} projects",
+    "empty": {
+      "title": "No skills found",
+      "subtitle": "Try adjusting your search or filter criteria",
+      "cta": "Clear filters"
+    },
+    "modal": {
+      "aria": "Skill details",
+      "ariaWithName": "Skill details: {{name}}",
+      "closeAria": "Close",
+      "closeTitle": "Close (Esc)",
+      "kicker": "Capability sheet",
+      "description": "Description",
+      "keyAreas": "Key Areas",
+      "usedInProjects": "Used In Projects",
+      "sections": {
+        "overview": "OVERVIEW",
+        "focusAreas": "FOCUS AREAS",
+        "proof": "PROOF (PROJECTS)"
+      },
+      "right": {
+        "howShowsTitle": "How it shows up in my work",
+        "howShowsBody": "I use this in context - decisions, trade-offs, deployment, and measurable outcomes.",
+        "chips": {
+          "production": "Production-minded",
+          "interfaces": "Clean interfaces",
+          "evidence": "Evidence-driven"
+        },
+        "smallSignalTitle": "Small detail, big signal",
+        "smallSignalBody": "No progress bars. No “95%”. If it's listed, it has shipped."
+      }
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "Have a project in mind or want to collaborate? I'd love to hear from you.",
+    "leftTitle": "Let's Connect",
+    "leftBody": "I'm always interested in hearing about new opportunities, interesting projects, or just chatting about data science and ML. Feel free to reach out!",
+    "basedIn": "Based in",
+    "findMeOn": "Find me on",
+    "preferEmail": "Prefer email?",
+    "dropLine": "Drop me a line directly at:",
+    "formTitle": "Send a Message",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "namePlaceholder": "Your name",
+      "emailPlaceholder": "you@example.com",
+      "messagePlaceholder": "Tell me about your project or just say hi...",
+      "send": "Send Message",
+      "note": "This will open your default email client",
+      "disclaimer": "No tracking • No forms backend • Opens your default email client"
+    },
+    "hero": {
+      "titleLead": "Let's build something",
+      "titleHighlight": "exceptional",
+      "body": "Open to impactful projects, product-minded ML, and ambitious data systems. If you've got a challenge, I'll bring the structure and execution.",
+      "primaryCta": "Email me",
+      "linkedinAria": "Open LinkedIn profile"
+    },
+    "direct": {
+      "title": "Reach me directly",
+      "subtitle": "Quick links, location, and a copy-to-clipboard email."
+    },
+    "blocks": {
+      "email": {
+        "label": "EMAIL",
+        "note": "Prefer email? This is the fastest way.",
+        "copyAria": "Copy email",
+        "copied": "Copied",
+        "copy": "Copy"
+      },
+      "location": {
+        "label": "BASED IN",
+        "meta": "Remote-friendly • Open to hybrid"
+      },
+      "links": {
+        "label": "LINKS"
+      }
+    },
+    "note": {
+      "title": "What works best",
+      "body": "A short context + goal + timeline. I'll reply with next steps and a clean plan."
+    },
+    "links": {
+      "githubHint": "Repos, experiments, open-source work",
+      "linkedinHint": "Professional profile & experience",
+      "emailName": "Email",
+      "emailHint": "Fastest way to reach me"
+    },
+    "formSubtitle": "Tell me what you're building and I'll get back with next steps.",
+    "replyTime": "Usually replies within {{time}}.",
+    "githubCta": "See my work",
+    "mail": {
+      "subject": "Portfolio contact from {{name}}",
+      "body": "From: {{name}} ({{email}})\\n\\n{{message}}"
+    }
+  },
+  "projects": {
+    "badge": "Archive",
+    "title": "Projects",
+    "subtitle": "Case studies, prototypes and applied research — focused on measurable outcomes.",
+    "searchPlaceholder": "Search projects, technologies...",
+    "count_one": "{{count}} project found",
+    "count_other": "{{count}} projects found",
+    "noResultsTitle": "No projects found",
+    "noResultsSubtitle": "Try adjusting your search or filters",
+    "clearAllFilters": "Clear all filters"
+  },
+  "projectTags": {
+    "NLP": "NLP",
+    "Classification": "Classification",
+    "Time Series": "Time Series",
+    "Forecasting": "Forecasting",
+    "Recommenders": "Recommenders",
+    "Deep Learning": "Deep Learning",
+    "Explainable AI": "Explainable AI",
+    "Production ML": "Production ML",
+    "MLOps": "MLOps",
+    "Streaming": "Streaming",
+    "Anomaly Detection": "Anomaly Detection",
+    "Statistics": "Statistics",
+    "EDA": "EDA",
+    "Real-time": "Real-time",
+    "Platform": "Platform"
+  },
+  "projectCard": {
+    "aria": {
+      "github": "GitHub repository",
+      "demo": "Live demo",
+      "blog": "Write-up / article"
+    },
+    "titles": {
+      "github": "Open GitHub repository",
+      "demo": "Open live demo",
+      "blog": "Open write-up / article"
+    }
+  },
+  "projectModal": {
+    "caseStudy": "Case study",
+    "selectedWork": "Selected work",
+    "impactLabel": "IMPACT",
+    "quickMetrics": "Quick metrics",
+    "stack": "Stack",
+    "links": "Links",
+    "sections": {
+      "problem": "Problem",
+      "approach": "Approach",
+      "results": "Results",
+      "improve": "What I'd improve next",
+      "repro": "Reproducibility"
+    },
+    "aria": {
+      "dialog": "Project details: {{title}}",
+      "prev": "Previous project",
+      "next": "Next project",
+      "close": "Close modal"
+    },
+    "titles": {
+      "prev": "Previous project (←)",
+      "next": "Next project (→)",
+      "close": "Close (Esc)"
+    },
+    "linkLabels": {
+      "github": "GitHub repository",
+      "demo": "Live demo",
+      "blog": "Write-up / article"
+    },
+    "tipNavigate": "to navigate •",
+    "tipPrefix": "Tip:",
+    "tipSuffix": "to close"
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "en": "EN",
+    "pt": "PT"
+  },
+  "navbar": {
+    "home": "Home",
+    "projects": "Projects",
+    "skills": "Skills",
+    "about": "About",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "home": {
+    "primaryCta": "View case studies",
+    "featuredEyebrow": "Selected work",
+    "featuredTitle": "Featured Projects",
+    "featuredSubtitle": "Selected work demonstrating impact through data science",
+    "viewAllProjects": "View all projects"
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "connect": "Connect",
+    "madeWith": "Made with",
+    "in": "in",
+    "rights": "All rights reserved.",
+    "builtWith": "Built with",
+    "usingReact": "using React"
+  },
+  "about": {
+    "metaDescriptionFallback": "Professional background, experience, skills and education.",
+    "profilePhotoAlt": "Profile photo",
+    "toc": "On this page",
+    "nav": {
+      "summary": "Summary",
+      "highlights": "Highlights",
+      "coreSkills": "Core skills",
+      "timeline": "Experience & education"
+    },
+    "summaryTitle": "Professional summary",
+    "highlightsTitle": "Highlights",
+    "highlightsSubtitle": "A quick scan of strengths and focus areas.",
+    "coreSkillsTitle": "Core skills & technologies",
+    "coreSkillsSubtitle": "Skills and technologies I use day by day",
+    "viewAllSkills": "View all skills",
+    "topCount": "Top {{count}}",
+    "careerJourney": "Career Journey",
+    "experienceTitle": "Experience",
+    "educationTitle": "Education",
+    "tapToExpand": "Tap a card to expand details.",
+    "dragDividerHelp": "Drag the divider to adjust the width of each column.",
+    "professionalExperience": "Professional Experience",
+    "education": "Education",
+    "resizeAria": "Resize Experience and Education columns",
+    "dividerTip": "Tip: Drag the divider • Double-click to reset • Use ← / → when focused (Shift = faster)",
+    "fullStoryTitle": "Want the full story in one message?",
+    "fullStoryBody": "I reply quickly and can share a tailored summary for your role."
+  },
+  "timeline": {
+    "showLess": "Show less",
+    "showAchievements": "Show achievements"
+  },
+  "education": {
+    "gpaLabel": "GPA:",
+    "showLess": "Show less",
+    "showDetails": "Show details"
+  }
+}

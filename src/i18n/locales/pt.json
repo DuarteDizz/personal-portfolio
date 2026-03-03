@@ -1,0 +1,305 @@
+{
+  "common": {
+    "language": "Idioma",
+    "english": "English",
+    "portuguese": "Português",
+    "close": "Fechar",
+    "clear": "Limpar",
+    "clearFilters": "Limpar filtros",
+    "contact": "Contato",
+    "viewAll": "Ver tudo",
+    "at": "em"
+  },
+  "skillCategories": {
+    "Programming": "Programação",
+    "Data Engineering": "Engenharia de Dados",
+    "Databases": "Bancos de Dados",
+    "Machine Learning": "Machine Learning",
+    "Deep Learning": "Deep Learning",
+    "Generative AI": "IA Generativa",
+    "Visualization & BI": "Visualização & BI",
+    "Cloud & MLOps": "Cloud & MLOps"
+  },
+  "skillLevels": {
+    "beginner": "Iniciante",
+    "intermediate": "Intermediário",
+    "advanced": "Avançado",
+    "expert": "Especialista"
+  },
+  "skillsLoopStrip": {
+    "kicker": "Toolkit",
+    "title": "Habilidades — visão rápida",
+    "subtitle": "Arraste a faixa. Para detalhes e contexto completo, abra a página de Habilidades.",
+    "cta": "Ver Habilidades",
+    "openSkills": "Abrir Habilidades →",
+    "hint": {
+      "hovered": "← Arraste para rolar →",
+      "idle": "Passe o mouse para pausar • Arraste para explorar"
+    },
+    "aria": {
+      "viewSkills": "Ver página de Habilidades",
+      "openSkillsCard": "Abrir página de Habilidades (a partir de {{name}})"
+    },
+    "titles": {
+      "viewSkills": "Ver Habilidades",
+      "openSkillsCard": "Abrir Habilidades"
+    }
+  },
+  "skills": {
+    "badge": "Arsenal Técnico",
+    "title": "Skills & Tecnologias",
+    "headline": "Skills, ferramentas e as evidências por trás delas.",
+    "lede": "Não é um checklist — é um índice curado do que eu realmente uso para entregar projetos de ML/dados, com trabalhos como prova.",
+    "subtitle": "Uma visão geral das ferramentas e tecnologias que uso para construir sistemas de ML em produção",
+    "searchPlaceholder": "Buscar skills...",
+    "search": {
+      "clearAria": "Limpar busca"
+    },
+    "categorySelectAria": "Selecionar categoria de skills",
+    "categoriesLabel": "CATEGORIAS",
+    "filters": {
+      "all": "Todas",
+      "allLong": "Todas as skills"
+    },
+    "categoryItemCount_one": "{{count}} item neste cluster de capacidade.",
+    "categoryItemCount_other": "{{count}} itens neste cluster de capacidade.",
+    "clickHint": "Clique em uma skill para ver o detalhamento",
+    "projectsCountLabel_one": "{{count}} projeto",
+    "projectsCountLabel_other": "{{count}} projetos",
+    "empty": {
+      "title": "Nenhuma skill encontrada",
+      "subtitle": "Tente ajustar sua busca ou filtros",
+      "cta": "Limpar filtros"
+    },
+    "usedInProjectsCount_one": "Usada em {{count}} projeto",
+    "usedInProjectsCount_other": "Usada em {{count}} projetos",
+    "modal": {
+      "aria": "Detalhes da skill",
+      "ariaWithName": "Detalhes da skill: {{name}}",
+      "closeAria": "Fechar",
+      "closeTitle": "Fechar (Esc)",
+      "kicker": "Ficha de competência",
+      "sections": {
+        "overview": "VISÃO GERAL",
+        "focusAreas": "FOCO",
+        "proof": "PROVA (PROJETOS)"
+      },
+      "right": {
+        "howShowsTitle": "Como isso aparece no meu trabalho",
+        "howShowsBody": "Eu uso isso no contexto — decisões, trade-offs, deploy e resultados mensuráveis.",
+        "chips": {
+          "production": "Pensado para produção",
+          "interfaces": "Interfaces limpas",
+          "evidence": "Guiado por evidência"
+        },
+        "smallSignalTitle": "Detalhe pequeno, sinal grande",
+        "smallSignalBody": "Sem barras de progresso. Sem “95%”. Se está listado, já foi entregue."
+      }
+    }
+  },
+  "contact": {
+    "title": "Fale comigo",
+    "subtitle": "Tem um projeto em mente ou quer colaborar? Vou curtir demais trocar ideia.",
+    "leftTitle": "Vamos nos conectar",
+    "leftBody": "Tenho interesse em novas oportunidades, projetos legais e em conversar sobre dados e ML. Fique à vontade para me chamar!",
+    "basedIn": "Baseado em",
+    "findMeOn": "Me encontre em",
+    "preferEmail": "Prefere e-mail?",
+    "dropLine": "Me envie direto em:",
+    "formTitle": "Enviar uma mensagem",
+    "form": {
+      "name": "Nome",
+      "email": "E-mail",
+      "message": "Mensagem",
+      "namePlaceholder": "Seu nome",
+      "emailPlaceholder": "voce@exemplo.com",
+      "messagePlaceholder": "Me conte sobre seu projeto ou só diga oi...",
+      "send": "Enviar mensagem",
+      "note": "Isso vai abrir seu cliente de e-mail padrão",
+      "disclaimer": "Sem tracking • Sem backend de formulário • Abre seu cliente de e-mail padrão"
+    },
+    "hero": {
+      "titleLead": "Vamos construir algo",
+      "titleHighlight": "excepcional",
+      "body": "Aberto a projetos com impacto, ML com visão de produto e sistemas de dados ambiciosos. Se você tem um desafio, eu trago estrutura e execução.",
+      "primaryCta": "Me mande um e-mail",
+      "linkedinAria": "Abrir perfil no LinkedIn"
+    },
+    "direct": {
+      "title": "Fale comigo direto",
+      "subtitle": "Links rápidos, localização e e-mail com copiar/colar."
+    },
+    "blocks": {
+      "email": {
+        "label": "E-MAIL",
+        "note": "Prefere e-mail? É o jeito mais rápido.",
+        "copyAria": "Copiar e-mail",
+        "copied": "Copiado",
+        "copy": "Copiar"
+      },
+      "location": {
+        "label": "BASE",
+        "meta": "Remoto ok • Aberto a híbrido"
+      },
+      "links": {
+        "label": "LINKS"
+      }
+    },
+    "note": {
+      "title": "O que ajuda mais",
+      "body": "Um contexto curto + objetivo + prazo. Eu respondo com próximos passos e um plano bem claro."
+    },
+    "links": {
+      "githubHint": "Repositórios, experimentos, open-source",
+      "linkedinHint": "Perfil profissional e experiência",
+      "emailName": "E-mail",
+      "emailHint": "O jeito mais rápido de falar comigo"
+    },
+    "formSubtitle": "Me conte o que você está construindo e eu retorno com os próximos passos.",
+    "replyTime": "Normalmente respondo em até {{time}}.",
+    "githubCta": "Ver meu trabalho",
+    "mail": {
+      "subject": "Contato via portfólio: {{name}}",
+      "body": "De: {{name}} ({{email}})\\n\\n{{message}}"
+    }
+  },
+  "projects": {
+    "badge": "Arquivo",
+    "title": "Projetos",
+    "subtitle": "Estudos de caso, protótipos e pesquisa aplicada — com foco em impacto mensurável.",
+    "searchPlaceholder": "Buscar projetos, tecnologias...",
+    "count_one": "{{count}} projeto encontrado",
+    "count_other": "{{count}} projetos encontrados",
+    "noResultsTitle": "Nenhum projeto encontrado",
+    "noResultsSubtitle": "Tente ajustar sua busca ou filtros",
+    "clearAllFilters": "Limpar todos os filtros"
+  },
+  "projectTags": {
+    "NLP": "NLP",
+    "Classification": "Classificação",
+    "Time Series": "Séries Temporais",
+    "Forecasting": "Previsão",
+    "Recommenders": "Recomendação",
+    "Deep Learning": "Deep Learning",
+    "Explainable AI": "IA Explicável",
+    "Production ML": "ML em Produção",
+    "MLOps": "MLOps",
+    "Streaming": "Streaming",
+    "Anomaly Detection": "Detecção de Anomalias",
+    "Statistics": "Estatística",
+    "EDA": "Análise Exploratória",
+    "Real-time": "Tempo real",
+    "Platform": "Plataforma"
+  },
+  "projectCard": {
+    "aria": {
+      "github": "Repositório no GitHub",
+      "demo": "Demo ao vivo"
+    },
+    "titles": {
+      "github": "Abrir repositório no GitHub",
+      "demo": "Abrir demo ao vivo"
+    }
+  },
+  "projectModal": {
+    "caseStudy": "Estudo de caso",
+    "selectedWork": "Trabalho selecionado",
+    "impactLabel": "IMPACTO",
+    "quickMetrics": "Métricas rápidas",
+    "stack": "Stack",
+    "links": "Links",
+    "sections": {
+      "problem": "Problema",
+      "approach": "Abordagem",
+      "results": "Resultados",
+      "improve": "O que eu melhoraria",
+      "repro": "Reprodutibilidade"
+    },
+    "aria": {
+      "dialog": "Detalhes do projeto: {{title}}",
+      "prev": "Projeto anterior",
+      "next": "Próximo projeto",
+      "close": "Fechar modal"
+    },
+    "titles": {
+      "prev": "Projeto anterior (←)",
+      "next": "Próximo projeto (→)",
+      "close": "Fechar (Esc)"
+    },
+    "linkLabels": {
+      "github": "Repositório no GitHub",
+      "demo": "Demo ao vivo",
+      "blog": "Artigo / write-up"
+    },
+    "tipNavigate": "para navegar •",
+    "tipPrefix": "Dica:",
+    "tipSuffix": "para fechar"
+  },
+  "languageSwitcher": {
+    "label": "Idioma",
+    "en": "EN",
+    "pt": "PT"
+  },
+  "navbar": {
+    "home": "Início",
+    "projects": "Projetos",
+    "skills": "Habilidades",
+    "about": "Sobre",
+    "blog": "Blog",
+    "contact": "Contato"
+  },
+  "home": {
+    "primaryCta": "Ver cases",
+    "featuredEyebrow": "Trabalhos selecionados",
+    "featuredTitle": "Projetos em Destaque",
+    "featuredSubtitle": "Trabalhos selecionados demonstrando impacto por meio de dados e IA",
+    "viewAllProjects": "Ver todos os projetos"
+  },
+  "footer": {
+    "quickLinks": "Links rápidos",
+    "connect": "Conecte-se",
+    "madeWith": "Feito com",
+    "in": "em",
+    "rights": "Todos os direitos reservados.",
+    "builtWith": "Feito com",
+    "usingReact": "usando React"
+  },
+  "about": {
+    "metaDescriptionFallback": "Background profissional, experiência, habilidades e formação.",
+    "profilePhotoAlt": "Foto de perfil",
+    "toc": "Nesta página",
+    "nav": {
+      "summary": "Resumo",
+      "highlights": "Destaques",
+      "coreSkills": "Habilidades-chave",
+      "timeline": "Experiência e formação"
+    },
+    "summaryTitle": "Resumo profissional",
+    "highlightsTitle": "Destaques",
+    "highlightsSubtitle": "Um panorama rápido de pontos fortes e áreas de foco (otimizado para recrutadores).",
+    "coreSkillsTitle": "Habilidades & tecnologias",
+    "coreSkillsSubtitle": "Agrupamento amigável para ATS e leitura humana rápida.",
+    "viewAllSkills": "Ver todas as habilidades",
+    "topCount": "Top {{count}}",
+    "careerJourney": "Jornada",
+    "experienceTitle": "Experiência",
+    "educationTitle": "Formação",
+    "tapToExpand": "Toque em um card para ver detalhes.",
+    "dragDividerHelp": "Arraste o divisor para ajustar a largura de cada coluna.",
+    "professionalExperience": "Experiência profissional",
+    "education": "Formação",
+    "resizeAria": "Redimensionar colunas de Experiência e Formação",
+    "dividerTip": "Dica: Arraste o divisor • Duplo clique para resetar • Use ← / → com foco (Shift = mais rápido)",
+    "fullStoryTitle": "Quer a história completa em uma mensagem?",
+    "fullStoryBody": "Respondo rápido e posso montar um resumo sob medida para a vaga."
+  },
+  "timeline": {
+    "showLess": "Mostrar menos",
+    "showAchievements": "Mostrar conquistas"
+  },
+  "education": {
+    "gpaLabel": "Média:",
+    "showLess": "Mostrar menos",
+    "showDetails": "Ver detalhes"
+  }
+}
