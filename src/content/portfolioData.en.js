@@ -3,7 +3,7 @@
 // ============================================
 
 export const brand = {
-  navbarIcon: "public/Dataverse Logo.png",
+  navbarIcon: "/Dataverse Logo.png",
   favicon: "https://i.imgur.com/OaZbUGJ.png",
   logoText: "D",
 };
