@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      (function () {
+        var repo = "/personal-portfolio";
+        var path = window.location.pathname;
+
+        var route = path.startsWith(repo)
+          ? path.slice(repo.length)
+          : path;
+
+        var target =
+          repo +
+          "/?redirect=" +
+          encodeURIComponent(route + window.location.search + window.location.hash);
+
+        window.location.replace(target);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
