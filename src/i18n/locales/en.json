@@ -169,7 +169,7 @@
   "projects": {
     "badge": "Archive",
     "title": "Projects",
-    "subtitle": "Case studies, prototypes and applied research — focused on measurable outcomes.",
+    "subtitle": "Case studies, prototypes and applied researches focused on measurable outcomes.",
     "searchPlaceholder": "Search projects, technologies...",
     "count_one": "{{count}} project found",
     "count_other": "{{count}} projects found",
