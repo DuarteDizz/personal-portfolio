@@ -49,7 +49,7 @@
     "badge": "Arsenal Técnico",
     "title": "Skills & Tecnologias",
     "headline": "Skills, ferramentas e as evidências por trás delas.",
-    "lede": "Não é um checklist — é um índice curado do que eu realmente uso para entregar projetos de ML/dados, com trabalhos como prova.",
+    "lede": "Um índice curado do que eu realmente uso para entregar projetos de ML/dados, com trabalhos como prova.",
     "subtitle": "Uma visão geral das ferramentas e tecnologias que uso para construir sistemas de ML em produção",
     "searchPlaceholder": "Buscar skills...",
     "search": {
@@ -166,7 +166,7 @@
   "projects": {
     "badge": "Arquivo",
     "title": "Projetos",
-    "subtitle": "Estudos de caso, protótipos e pesquisa aplicada — com foco em impacto mensurável.",
+    "subtitle": "Estudos de caso, protótipos e pesquisas aplicadas com foco em impacto mensurável.",
     "searchPlaceholder": "Buscar projetos, tecnologias...",
     "count_one": "{{count}} projeto encontrado",
     "count_other": "{{count}} projetos encontrados",
