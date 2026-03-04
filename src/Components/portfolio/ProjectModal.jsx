@@ -16,7 +16,7 @@ import {
 import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
 import { usePortfolioData } from '@/content/usePortfolioData';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 
 const hasText = (v) => typeof v === 'string' && v.trim().length > 0;
 const hasContent = (v) =>
@@ -30,12 +30,17 @@ export default function ProjectModal({ project, onClose }) {
   const { projects: allProjects } = usePortfolioData();
   const shouldReduceMotion = useReducedMotion();
   const scrollRef = useRef(null);
+  const touchStartXRef = useRef(null);
 
   // Local navigation (Prev/Next) without needing parent state changes
   const [activeProject, setActiveProject] = useState(project ?? null);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   useEffect(() => {
     setActiveProject(project ?? null);
+    setActiveImageIndex(0);
+    setIsGalleryOpen(false);
   }, [project]);
 
   const data = useMemo(() => {
@@ -46,7 +51,9 @@ export default function ProjectModal({ project, onClose }) {
       title: activeProject.title,
       tags: Array.isArray(activeProject.tags) ? activeProject.tags : [],
       techStack: Array.isArray(activeProject.techStack) ? activeProject.techStack : [],
-      images: Array.isArray(activeProject.images) ? activeProject.images : [],
+      images: Array.isArray(activeProject.images)
+        ? activeProject.images.filter((src) => typeof src === 'string' && src.trim().length > 0)
+        : [],
       impactStatement: activeProject.impactStatement,
       metrics: Array.isArray(activeProject.metrics) ? activeProject.metrics : [],
       problem: activeProject.problem,
@@ -58,6 +65,11 @@ export default function ProjectModal({ project, onClose }) {
     };
   }, [activeProject]);
 
+  const imageCount = data?.images?.length ?? 0;
+  const safeImageIndex = imageCount ? Math.min(activeImageIndex, imageCount - 1) : 0;
+  const heroMedia = imageCount ? data.images[safeImageIndex] : null;
+  const canNavigateImages = imageCount > 1;
+
   const nav = useMemo(() => {
     if (!data) return { prev: null, next: null };
 
@@ -68,7 +80,35 @@ export default function ProjectModal({ project, onClose }) {
     const next = idx >= 0 && idx < allProjects.length - 1 ? allProjects[idx + 1] : null;
 
     return { prev, next };
-  }, [data]);
+  }, [allProjects, data]);
+
+  useEffect(() => {
+    if (!imageCount) {
+      if (activeImageIndex !== 0) setActiveImageIndex(0);
+      if (isGalleryOpen) setIsGalleryOpen(false);
+      return;
+    }
+
+    if (activeImageIndex > imageCount - 1) {
+      setActiveImageIndex(imageCount - 1);
+    }
+  }, [activeImageIndex, imageCount, isGalleryOpen]);
+
+  useEffect(() => {
+    if (!imageCount || typeof window === 'undefined') return;
+
+    const preloadIndexes = [safeImageIndex];
+    if (imageCount > 1) {
+      preloadIndexes.push((safeImageIndex + 1) % imageCount, (safeImageIndex - 1 + imageCount) % imageCount);
+    }
+
+    preloadIndexes.forEach((index) => {
+      const src = data?.images?.[index];
+      if (!src) return;
+      const img = new window.Image();
+      img.src = src;
+    });
+  }, [data, imageCount, safeImageIndex]);
 
   const resetScrollTop = useCallback(() => {
     requestAnimationFrame(() => {
@@ -80,9 +120,64 @@ export default function ProjectModal({ project, onClose }) {
     (p) => {
       if (!p) return;
       setActiveProject(p);
+      setActiveImageIndex(0);
+      setIsGalleryOpen(false);
       resetScrollTop();
     },
     [resetScrollTop]
+  );
+
+  const openGallery = useCallback(
+    (index = 0) => {
+      if (!imageCount) return;
+      const boundedIndex = Math.max(0, Math.min(index, imageCount - 1));
+      setActiveImageIndex(boundedIndex);
+      setIsGalleryOpen(true);
+    },
+    [imageCount]
+  );
+
+  const closeGallery = useCallback(() => {
+    setIsGalleryOpen(false);
+  }, []);
+
+  const showPrevImage = useCallback(() => {
+    if (!imageCount) return;
+    setActiveImageIndex((prev) => (prev - 1 + imageCount) % imageCount);
+  }, [imageCount]);
+
+  const showNextImage = useCallback(() => {
+    if (!imageCount) return;
+    setActiveImageIndex((prev) => (prev + 1) % imageCount);
+  }, [imageCount]);
+
+  const handleGalleryTouchStart = useCallback((e) => {
+    touchStartXRef.current = e.changedTouches?.[0]?.clientX ?? null;
+  }, []);
+
+  const handleGalleryTouchEnd = useCallback(
+    (e) => {
+      if (!canNavigateImages) {
+        touchStartXRef.current = null;
+        return;
+      }
+
+      const startX = touchStartXRef.current;
+      const endX = e.changedTouches?.[0]?.clientX ?? null;
+      touchStartXRef.current = null;
+
+      if (startX === null || endX === null) return;
+
+      const deltaX = endX - startX;
+      if (Math.abs(deltaX) < 40) return;
+
+      if (deltaX < 0) {
+        showNextImage();
+      } else {
+        showPrevImage();
+      }
+    },
+    [canNavigateImages, showNextImage, showPrevImage]
   );
 
   // ESC to close + arrow keys to navigate + lock body scroll while open + reset scroll
@@ -91,6 +186,12 @@ export default function ProjectModal({ project, onClose }) {
 
     const onKeyDown = (e) => {
       if (e.key === 'Escape') {
+        if (isGalleryOpen) {
+          e.preventDefault();
+          closeGallery();
+          return;
+        }
+
         onClose?.();
         return;
       }
@@ -102,13 +203,30 @@ export default function ProjectModal({ project, onClose }) {
 
       if (isTyping) return;
 
-      if (e.key === 'ArrowLeft' && nav.prev) {
-        e.preventDefault();
-        goToProject(nav.prev);
+      if (e.key === 'ArrowLeft') {
+        if (isGalleryOpen) {
+          e.preventDefault();
+          if (canNavigateImages) showPrevImage();
+          return;
+        }
+
+        if (nav.prev) {
+          e.preventDefault();
+          goToProject(nav.prev);
+        }
       }
-      if (e.key === 'ArrowRight' && nav.next) {
-        e.preventDefault();
-        goToProject(nav.next);
+
+      if (e.key === 'ArrowRight') {
+        if (isGalleryOpen) {
+          e.preventDefault();
+          if (canNavigateImages) showNextImage();
+          return;
+        }
+
+        if (nav.next) {
+          e.preventDefault();
+          goToProject(nav.next);
+        }
       }
     };
 
@@ -123,11 +241,21 @@ export default function ProjectModal({ project, onClose }) {
       window.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = prevOverflow || '';
     };
-  }, [data, nav.prev, nav.next, goToProject, onClose, resetScrollTop]);
+  }, [
+    canNavigateImages,
+    closeGallery,
+    data,
+    goToProject,
+    isGalleryOpen,
+    nav.next,
+    nav.prev,
+    onClose,
+    resetScrollTop,
+    showNextImage,
+    showPrevImage
+  ]);
 
   if (!data) return null;
-
-  const heroMedia = data.images?.[0];
 
   const linkItems = [
     data.links?.github
@@ -149,6 +277,20 @@ export default function ProjectModal({ project, onClose }) {
         exit: { opacity: 0, y: 18 },
         transition: { duration: 0.45, ease: 'easeOut' }
       };
+
+  const galleryMotion = shouldReduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, scale: 0.98 },
+        animate: { opacity: 1, scale: 1 },
+        exit: { opacity: 0, scale: 0.98 },
+        transition: { duration: 0.22, ease: 'easeOut' }
+      };
+
+  const galleryCountLabel = t('projectModal.gallery.count', {
+    current: safeImageIndex + 1,
+    total: imageCount
+  });
 
   return (
     <AnimatePresence>
@@ -203,10 +345,14 @@ export default function ProjectModal({ project, onClose }) {
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 text-sm font-semibold tracking-wide text-slate-600 dark:text-slate-400">
                       <span className="inline-flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500" />{t('projectModal.caseStudy')}</span>
+                        <span className="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500" />
+                        {t('projectModal.caseStudy')}
+                      </span>
                       <span className="text-slate-300 dark:text-slate-700">/</span>
                       <span className="inline-flex items-center gap-1">
-                        <Sparkles className="w-4 h-4" />{t('projectModal.selectedWork')}</span>
+                        <Sparkles className="w-4 h-4" />
+                        {t('projectModal.selectedWork')}
+                      </span>
                     </div>
 
                     <h2 className="mt-2 text-2xl md:text-3xl font-display font-black tracking-tight text-slate-950 dark:text-white leading-tight truncate">
@@ -281,28 +427,46 @@ export default function ProjectModal({ project, onClose }) {
               {heroMedia && (
                 <div className="px-6 md:px-8 pt-6">
                   <figure className="rounded-[1.5rem] overflow-hidden border border-slate-200/70 dark:border-slate-800/70 bg-slate-100 dark:bg-slate-900">
-                    <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => openGallery(safeImageIndex)}
+                      aria-label={t(
+                        canNavigateImages ? 'projectModal.gallery.open' : 'projectModal.gallery.openSingle'
+                      )}
+                      className="group relative block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/60 focus-visible:ring-inset"
+                    >
                       <img
                         src={heroMedia}
-                        alt={data.title}
-                        className="w-full h-[220px] md:h-[320px] object-cover"
+                        alt={t('projectModal.gallery.imageAlt', {
+                          title: data.title,
+                          current: safeImageIndex + 1,
+                          total: imageCount
+                        })}
+                        className="w-full h-[220px] md:h-[320px] object-cover cursor-zoom-in"
                         loading="lazy"
                       />
                       <div
                         aria-hidden
                         className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent"
                       />
+
+                      <div className="absolute top-4 right-4 inline-flex items-center rounded-full border border-white/20 bg-black/45 px-3 py-1 text-xs font-semibold text-white">
+                        {galleryCountLabel}
+                      </div>
+
                       {hasText(data.impactStatement) && (
-                        <figcaption className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+                        <figcaption className="absolute bottom-0 left-0 right-0 p-5 md:p-6 pointer-events-none">
                           <div className="max-w-3xl">
-                            <p className="text-white/85 text-xs font-semibold tracking-wide mb-2">{t('projectModal.impactLabel')}</p>
+                            <p className="text-white/85 text-xs font-semibold tracking-wide mb-2">
+                              {t('projectModal.impactLabel')}
+                            </p>
                             <p className="text-white text-lg md:text-xl font-bold leading-snug">
                               {data.impactStatement}
                             </p>
                           </div>
                         </figcaption>
                       )}
-                    </div>
+                    </button>
                   </figure>
                 </div>
               )}
@@ -313,7 +477,9 @@ export default function ProjectModal({ project, onClose }) {
                   <div className="lg:col-span-7">
                     {!heroMedia && hasText(data.impactStatement) && (
                       <div className="mb-8">
-                        <p className="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400 mb-2">{t('projectModal.impactLabel')}</p>
+                        <p className="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400 mb-2">
+                          {t('projectModal.impactLabel')}
+                        </p>
                         <p className="text-xl md:text-2xl font-display font-black tracking-tight text-slate-950 dark:text-white leading-snug">
                           {data.impactStatement}
                         </p>
@@ -345,7 +511,9 @@ export default function ProjectModal({ project, onClose }) {
                         <div className="rounded-[1.5rem] border border-slate-200/70 dark:border-slate-800/70 bg-white/70 dark:bg-slate-950/50 backdrop-blur-md p-6">
                           <div className="flex items-center gap-2 mb-4">
                             <BarChart3 className="w-4 h-4 text-cyan-700 dark:text-cyan-300" />
-                            <h3 className="text-sm font-extrabold tracking-wide text-slate-950 dark:text-white">{t('projectModal.quickMetrics')}</h3>
+                            <h3 className="text-sm font-extrabold tracking-wide text-slate-950 dark:text-white">
+                              {t('projectModal.quickMetrics')}
+                            </h3>
                           </div>
 
                           <div className="grid grid-cols-2 gap-3">
@@ -371,7 +539,9 @@ export default function ProjectModal({ project, onClose }) {
                         <div className="rounded-[1.5rem] border border-slate-200/70 dark:border-slate-800/70 bg-white/70 dark:bg-slate-950/50 backdrop-blur-md p-6">
                           <div className="flex items-center gap-2 mb-4">
                             <Wrench className="w-4 h-4 text-teal-700 dark:text-teal-300" />
-                            <h3 className="text-sm font-extrabold tracking-wide text-slate-950 dark:text-white">{t('projectModal.stack')}</h3>
+                            <h3 className="text-sm font-extrabold tracking-wide text-slate-950 dark:text-white">
+                              {t('projectModal.stack')}
+                            </h3>
                           </div>
 
                           <div className="flex flex-wrap gap-2">
@@ -393,7 +563,9 @@ export default function ProjectModal({ project, onClose }) {
                         <div className="rounded-[1.5rem] border border-slate-200/70 dark:border-slate-800/70 bg-white/70 dark:bg-slate-950/50 backdrop-blur-md p-6">
                           <div className="flex items-center gap-2 mb-4">
                             <LinkIcon className="w-4 h-4 text-slate-700 dark:text-slate-300" />
-                            <h3 className="text-sm font-extrabold tracking-wide text-slate-950 dark:text-white">{t('projectModal.links')}</h3>
+                            <h3 className="text-sm font-extrabold tracking-wide text-slate-950 dark:text-white">
+                              {t('projectModal.links')}
+                            </h3>
                           </div>
 
                           <div className="space-y-2">
@@ -421,6 +593,107 @@ export default function ProjectModal({ project, onClose }) {
               </div>
             </div>
           </motion.div>
+
+          <AnimatePresence>
+            {isGalleryOpen && heroMedia && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.18, ease: 'easeOut' }}
+                  className="fixed inset-0 z-[60] bg-slate-950/78 backdrop-blur-md"
+                  onClick={closeGallery}
+                  aria-hidden
+                />
+
+                <motion.div
+                  {...galleryMotion}
+                  className="fixed inset-0 z-[61] flex items-center justify-center p-3 md:p-8"
+                  onClick={closeGallery}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label={t('projectModal.gallery.aria', { title: data.title })}
+                >
+                  <div
+                    className="relative"
+                    onClick={(e) => e.stopPropagation()}
+                    onTouchStart={handleGalleryTouchStart}
+                    onTouchEnd={handleGalleryTouchEnd}
+                  >
+                    <img
+                      src={heroMedia}
+                      alt={t('projectModal.gallery.imageAlt', {
+                        title: data.title,
+                        current: safeImageIndex + 1,
+                        total: imageCount
+                      })}
+                      className="block max-w-[96vw] max-h-[92vh] md:max-w-[94vw] md:max-h-[90vh] h-auto w-auto rounded-[1.75rem] object-contain shadow-[0_30px_120px_-40px_rgba(0,0,0,0.8)] select-none"
+                      loading="eager"
+                      decoding="async"
+                      draggable={false}
+                    />
+
+                    <div aria-hidden className="pointer-events-none absolute inset-0 rounded-[1.75rem] ring-1 ring-white/10" />
+
+                    <div className="absolute top-3 left-3 md:top-4 md:left-4 inline-flex items-center rounded-full border border-white/10 bg-slate-950/55 px-3 py-1 text-xs font-semibold text-white/85 backdrop-blur-sm">
+                      {galleryCountLabel}
+                    </div>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={closeGallery}
+                      className="absolute top-3 right-3 md:top-4 md:right-4 rounded-full border border-white/10 bg-slate-950/55 text-white/85 backdrop-blur-sm hover:bg-slate-950/72 hover:text-white"
+                      aria-label={t('projectModal.gallery.closeLabel')}
+                      title={t('projectModal.gallery.closeLabel')}
+                    >
+                      <X className="w-5 h-5" />
+                    </Button>
+
+                    {canNavigateImages && (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={showPrevImage}
+                          className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 rounded-full border border-white/10 bg-slate-950/55 text-white backdrop-blur-sm hover:bg-slate-950/72 hover:text-white"
+                          aria-label={t('projectModal.gallery.prevLabel')}
+                          title={t('projectModal.gallery.prevLabel')}
+                        >
+                          <ChevronLeft className="w-6 h-6" />
+                        </Button>
+
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={showNextImage}
+                          className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 rounded-full border border-white/10 bg-slate-950/55 text-white backdrop-blur-sm hover:bg-slate-950/72 hover:text-white"
+                          aria-label={t('projectModal.gallery.nextLabel')}
+                          title={t('projectModal.gallery.nextLabel')}
+                        >
+                          <ChevronRight className="w-6 h-6" />
+                        </Button>
+                      </>
+                    )}
+
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-slate-950/55 px-3 py-1 text-[11px] font-semibold text-white/75 backdrop-blur-sm">
+                      {canNavigateImages ? (
+                        <>
+                          <span className="text-white/85">←</span> / <span className="text-white/85">→</span> {t('projectModal.gallery.navigateHint')} •{' '}
+                          <span className="text-white/85">Esc</span> {t('projectModal.gallery.closeHint')}
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-white/85">Esc</span> {t('projectModal.gallery.closeHint')}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </>
       )}
     </AnimatePresence>
@@ -458,7 +731,7 @@ function StorySection({ n, title, content }) {
 
         <div>
           <div className="flex items-baseline gap-3">
-            <span className={`text-xs font-black tracking-[0.25em] text-slate-400 dark:text-slate-600`}>
+            <span className="text-xs font-black tracking-[0.25em] text-slate-400 dark:text-slate-600">
               {n}
             </span>
             <h3 className="text-xl md:text-2xl font-display font-black tracking-tight text-slate-950 dark:text-white">

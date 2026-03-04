@@ -267,7 +267,7 @@ export default function Home() {
           >
             <div>
               <p className="text-sm font-semibold tracking-wide text-slate-600 dark:text-slate-400">
-                Selected work
+                {t('home.featuredEyebrow')}
               </p>
               <h2 className="mt-2 text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
                 {t('home.featuredTitle')}

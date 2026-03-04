@@ -268,7 +268,7 @@ export const projects = [
   shortDescription: "End-to-end AI application that lets users query a movie knowledge graph in natural language, converting questions into safe, validated Cypher queries over Neo4j.",
   impactStatement: "Designed and delivered a production-minded AI data app that combines LLM orchestration, graph databases, and a user-friendly interface for intuitive data exploration and recommendations.",
   problem: "Exploring movie and entertainment datasets typically requires technical knowledge of query languages and database structure, which creates friction for non-technical users. The goal was to build an accessible application that could translate natural-language questions into reliable graph queries while maintaining safety, transparency, and control over database access.",
-  approach: "Built an end-to-end solution that cleans and structures raw movie metadata into a Neo4j knowledge graph, modeling titles, people, genres, and relationship links. Implemented an LLM-driven multi-step workflow to interpret user intent, generate Cypher, validate queries before execution, and return readable answers. Wrapped the full experience in a Streamlit app with Dockerized setup, environment-based configuration, and automated test coverage for reproducibility and maintainability.",
+  approach: "Built an end-to-end solution that cleans and structures raw movie metadata into a Neo4j knowledge graph, modeling titles, people, genres, and relationship links. Implemented an LLM-driven multi-step workflow to interpret user intent, generate Cypher, validate queries before execution, and return readable answers. Wrapped the full experience in a Streamlit app with Dockerized setup and environment-based configuration for reproducibility and maintainability.",
   results: "Delivered a fully functional portfolio project that demonstrates applied AI engineering, graph data modeling, and product-oriented implementation. The solution indexes 5,239 cleaned titles, processes 76,531 credit rows, represents 53,604 unique people, and supports natural-language discovery and recommendation workflows through a safe Text2Cypher pipeline.",
   metrics: [
     { label: "Titles Indexed", value: "5.2K" },
@@ -279,7 +279,7 @@ export const projects = [
   techStack: ["Python", "Neo4j", "Strands", "LangChain", "Streamlit", "Pandas", "Docker"],
   tags: ["LLM Applications", "Knowledge Graphs", "AI Engineering", "Data Products"],
   links: {
-    github: "YOUR_GITHUB_LINK_HERE",
+    github: "",
     blog: ""
   },
   images: [

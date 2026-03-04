@@ -240,13 +240,17 @@
     "tipPrefix": "Tip:",
     "tipSuffix": "to close",
     "gallery": {
+      "images": "Images",
       "open": "Open gallery",
-      "openSingle": "Expand image",
+      "openSingle": "Open image",
       "closeLabel": "Close gallery",
-      "closeHint": "to close the gallery",
-      "imageAlt": "Image {{current}} of {{total}} for {{title}}",
-      "navigateHint": "to navigate the gallery",
-      "count": "{{current}} / {{total}}"
+      "navigateHint": "to navigate",
+      "closeHint": "to close",
+      "count": "{{current}} / {{total}}",
+      "imageAlt": "{{title}} image {{current}} of {{total}}",
+      "aria": "Image gallery for {{title}}",
+      "prevLabel": "Previous image",
+      "nextLabel": "Next image"
     }
   },
   "languageSwitcher": {

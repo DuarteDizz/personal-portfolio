@@ -27,7 +27,7 @@
     "expert": "Especialista"
   },
   "skillsLoopStrip": {
-    "kicker": "Toolkit",
+    "kicker": "Ferramentas",
     "title": "Habilidades — visão rápida",
     "subtitle": "Arraste a faixa. Para detalhes e contexto completo, abra a página de Habilidades.",
     "cta": "Ver Habilidades",
@@ -235,13 +235,17 @@
     "tipPrefix": "Dica:",
     "tipSuffix": "para fechar",
     "gallery": {
+      "images": "Imagens",
       "open": "Abrir galeria",
-      "openSingle": "Ampliar imagem",
+      "openSingle": "Abrir imagem",
       "closeLabel": "Fechar galeria",
-      "closeHint": "para fechar a galeria",
-      "imageAlt": "Imagem {{current}} de {{total}} de {{title}}",
-      "navigateHint": "para navegar na galeria",
-      "count": "{{current}} / {{total}}"
+      "navigateHint": "para navegar",
+      "closeHint": "para fechar",
+      "count": "{{current}} / {{total}}",
+      "imageAlt": "Imagem {{current}} de {{total}} — {{title}}",
+      "aria": "Galeria de imagens de {{title}}",
+      "prevLabel": "Imagem anterior",
+      "nextLabel": "Próxima imagem"
     }
   },
   "languageSwitcher": {

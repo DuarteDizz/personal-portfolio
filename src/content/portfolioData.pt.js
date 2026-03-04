@@ -30,7 +30,7 @@ export const profile = {
 export const hero = {
   terminal: {
     title: "diego@portfolio.py",
-    codeLineTemplate: "print(\"Hello World! My name is {{name}}.\")",
+    codeLineTemplate: "print(\"Olá, mundo! Meu nome é {{name}}.\")",
     typingSpeedMs: 50
   },
   ctas: [
@@ -264,36 +264,39 @@ export const aboutBlocks = [
 
 export const projects = [
   {
-    id: "customer-churn",
-    title: "Previsão de Churn de Clientes",
-    shortDescription: "Sistema de ML para prever churn com insights de IA explicável usando valores SHAP para uma empresa de telecomunicações.",
-    impactStatement: "Reduziu o churn em 23% por meio de campanhas proativas de retenção",
-    problem: "Uma grande operadora de telecomunicações estava perdendo US$ 2 milhões por ano devido a churn inesperado de clientes. O sistema atual, baseado em regras, tinha baixa acurácia e não conseguia identificar clientes em risco com antecedência suficiente para permitir intervenção.",
-    approach: "Construí um pipeline de ML ponta a ponta usando XGBoost, com engenharia de features cuidadosa a partir de dados de comportamento dos clientes. Implementei SHAP para interpretabilidade do modelo, permitindo ao time de negócio entender por que cada cliente foi sinalizado. Criei uma API de scoring em tempo real e a integrei ao CRM para alertas automáticos.",
-    results: "O modelo atingiu 0,89 de AUC-ROC em dados de validação. Mais importante: o time de retenção conseguiu intervir em 78% dos clientes sinalizados antes do churn, gerando economia trimestral de US$ 460 mil.",
-    metrics: [
-      { label: "AUC-ROC", value: "0.89" },
-      { label: "Redução de Churn", value: "23%" },
-      { label: "Economia Trimestral", value: "$460K" },
-      { label: "Precisão@10%", value: "0.72" }
-    ],
-    techStack: ["Python", "XGBoost", "SHAP", "FastAPI", "PostgreSQL", "Docker", "Airflow"],
-    tags: ["Classification", "Explainable AI", "Production ML"],
-    links: { github: "https://github.com", blog: "#" },
-    images: [
-      "https://i.ibb.co/8gjZ35kS/imagem-2026-03-04-032632150.png",
-      "https://i.ibb.co/ksvfwqzp/imagem-2026-03-04-032110513.png"
-    ],
-    whatIdImprove: [
-    "Adicionar suporte a múltiplos provedores e modelos de LLM, incluindo alternativas open source, para aumentar a flexibilidade e reduzir dependência de fornecedor.",
-    "Melhorar a busca por similaridade e a qualidade das recomendações com o uso de embeddings baseados em descrições.",
-    "Aumentar a transparência ao exibir a geração da resposta do LLM em streaming e apresentar etapas intermediárias de forma amigável.",
-    "Redesenhar a experiência em uma interface orientada a chat, tornando a interação mais intuitiva e conversacional.",
-    "Implementar uma cobertura robusta de testes automatizados para aumentar a confiabilidade, a manutenibilidade e a segurança em futuras evoluções."
-    ],
-    reproducibility: "Clone o repositório e execute `docker-compose up` para iniciar o ambiente. Dados de exemplo inclusos. Veja o README para instruções completas de setup.",
-    featured: true,
-    caseStudy: true
+  id: "movie-knowledge-graph-explorer",
+  title: "Explorador de Knowledge Graph de Filmes com IA",
+  shortDescription: "Aplicação de IA ponta a ponta que permite aos usuários consultar um Knowledge Graph de filmes em linguagem natural, convertendo perguntas em queries Cypher seguras e validadas no Neo4j.",
+  impactStatement: "Desenvolvi uma aplicação de dados com IA orientada a uso real, combinando orquestração de LLMs, banco de dados em grafo e uma interface intuitiva para viabilizar exploração de dados e recomendações de forma acessível e confiável.",
+  problem: "A exploração de bases de dados de filmes e entretenimento normalmente exige conhecimento técnico sobre linguagens de consulta e sobre a estrutura do banco, o que cria fricção para usuários não técnicos. O objetivo foi construir uma aplicação acessível, capaz de traduzir perguntas em linguagem natural em consultas confiáveis em grafo, preservando segurança, transparência e controle sobre o acesso ao banco de dados.",
+  approach: "Foi construída uma solução ponta a ponta que realiza o tratamento e a estruturação dos metadados brutos de filmes em um Knowledge Graph no Neo4j, modelando títulos, pessoas, gêneros e vínculos de relacionamento. Também foi implementado um fluxo multiestágio orientado por LLM para interpretar a intenção do usuário, gerar Cypher, validar as queries antes da execução e retornar respostas legíveis. Toda a experiência foi disponibilizada em uma aplicação Streamlit com setup em Docker e configuração baseada em variáveis de ambiente, garantindo reprodutibilidade e facilidade de manutenção.",
+  results: "O projeto resultou em uma aplicação de portfólio totalmente funcional, demonstrando na prática competências em engenharia de IA, modelagem de dados em grafo e construção de produtos de dados. A solução indexa 5.239 títulos tratados, processa 76.531 registros de créditos, representa 53.604 pessoas únicas e suporta fluxos de descoberta e recomendação em linguagem natural por meio de um pipeline seguro de Text2Cypher.",
+  metrics: [
+    { label: "Títulos Indexados", value: "5.2K" },
+    { label: "Registros de Créditos Processados", value: "76.5K" },
+    { label: "Pessoas Únicas", value: "53.6K" },
+    { label: "Gêneros Modelados", value: "19" }
+  ],
+  techStack: ["Python", "Neo4j", "Strands", "LangChain", "Text2Cypher", "Streamlit", "Pandas", "Docker"],
+  tags: ["Aplicações com LLM", "Grafos de Conhecimento", "Engenharia de IA", "Produtos de Dados"],
+  links: {
+    github: "",
+    blog: ""
+  },
+  images: [
+    "https://i.ibb.co/8gjZ35kS/imagem-2026-03-04-032632150.png",
+    "https://i.ibb.co/ksvfwqzp/imagem-2026-03-04-032110513.png"
+  ],
+  whatIdImprove: [
+  "Expandir o suporte para múltiplos provedores e modelos de LLM, incluindo alternativas open source, ampliando a flexibilidade da arquitetura e reduzindo a dependência de fornecedor.",
+  "Aprimorar a busca por similaridade e a qualidade das recomendações com o uso de embeddings gerados a partir das descrições dos conteúdos.",
+  "Elevar a transparência da experiência com streaming das respostas e exposição de etapas intermediárias do processamento de forma clara para o usuário.",
+  "Evoluir a interface para um modelo centrado em chat, tornando a interação mais natural, fluida e alinhada ao padrão esperado em aplicações conversacionais.",
+  "Ampliar a cobertura de testes automatizados para reforçar confiabilidade, manutenibilidade e segurança nas próximas evoluções da solução."
+  ],
+  reproducibility: "Para reproduzir o projeto, basta clonar o repositório, configurar as variáveis de ambiente com base no arquivo .env.example, conectar as credenciais da OpenAI e do Neo4j, e executar `docker compose up -d --build`. O projeto também pode ser executado localmente para desenvolvimento e testes.",
+  featured: true,
+  caseStudy: false
   }
 ];
 
