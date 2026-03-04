@@ -1,5 +1,5 @@
 // Home.jsx (Portfolio editorial style — not SaaS)
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -9,9 +9,8 @@ import { usePortfolioData } from '@/content/usePortfolioData';
 import ProjectCard from '@/Components/portfolio/ProjectCard';
 import SkillsLoopStrip from '@/Components/portfolio/SkillsLoopStrip';
 import TerminalHeroCard from '@/Components/portfolio/TerminalHeroCard';
-
-
 import HeroNetworkBackground from '@/Components/portfolio/HeroNetworkBackground';
+import useElementVisibility from '@/hooks/useElementVisibility';
 
 const fade = {
   initial: { opacity: 0, y: 14 },
@@ -23,13 +22,16 @@ const stagger = {
   animate: { transition: { staggerChildren: 0.08 } }
 };
 
-export default function Home() {
-  const { t } = useTranslation();  const navigate = useNavigate();
+const heroViewport = { once: true, amount: 0.2 };
 
-  // Localized portfolio content tied to navbar language
+export default function Home() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const heroSectionRef = useRef(null);
+  const heroIsVisible = useElementVisibility(heroSectionRef, { threshold: 0.2, rootMargin: '120px 0px' });
+
   const { profile, hero, projects } = usePortfolioData();
 
-  // CTAs are content (and therefore language-specific) — keep labels/destinations in portfolioData.en/pt.js
   const primaryCta = hero?.ctas?.find((c) => c.variant === 'primary') || hero?.ctas?.[0];
   const secondaryCta = hero?.ctas?.find((c) => c.variant === 'secondary') || hero?.ctas?.[1];
 
@@ -43,15 +45,12 @@ export default function Home() {
   const primaryResolved = resolveCta(primaryCta);
   const secondaryResolved = resolveCta(secondaryCta);
 
-  // Signature line (fully controlled via src/content/portfolioData.*.js)
   const signature = hero?.signature;
   const sigBeforeLocation = signature?.beforeLocation ?? 'Based in';
   const sigAfterLocation = signature?.afterLocation ?? 'Available for roles in';
   const sigRoles = signature?.roles ?? 'Data / Analytics / AI';
   const sigLocationSeparator = signature?.locationSeparator ?? '.';
   const sigRolesSuffix = signature?.rolesSuffix ?? '.';
-
-
 
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 3);
 
@@ -68,7 +67,6 @@ export default function Home() {
   };
 
   const onProjectRowClick = (e, projectId) => {
-    // If user clicked an actual interactive element inside the card, don't hijack it.
     const target = e?.target;
     if (target && typeof target.closest === 'function') {
       const interactive = target.closest('a,button,[role="button"],[data-no-row-nav="true"]');
@@ -86,12 +84,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* HERO (editorial, bold typography, minimal chrome) */}
-      <section className="relative overflow-hidden pt-28 md:pt-36 pb-16 md:pb-20">
-        {/* Base */}
+      <section ref={heroSectionRef} className="relative overflow-hidden pt-28 md:pt-36 pb-16 md:pb-20">
         <div className="absolute inset-0 bg-white dark:bg-slate-950" />
 
-        {/* Art direction: glow + grain + subtle line */}
         <div
           aria-hidden
           className="absolute -top-56 -right-56 w-[900px] h-[900px] rounded-full blur-3xl bg-cyan-500/12 dark:bg-cyan-400/10"
@@ -113,14 +108,17 @@ export default function Home() {
           className="absolute left-0 right-0 top-[70%] h-px bg-gradient-to-r from-transparent via-slate-300/60 to-transparent dark:via-slate-700/60"
         />
 
-        {/* Keep your network background but let it be subtle art */}
-        <HeroNetworkBackground />
+        <HeroNetworkBackground isActive={heroIsVisible} />
 
         <div className="relative max-w-[92rem] mx-auto px-6">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-            {/* LEFT: Big editorial copy */}
-            <motion.div variants={stagger} initial="initial" animate="animate" className="lg:col-span-7">
-              {/* Small label */}
+            <motion.div
+              variants={stagger}
+              initial="initial"
+              whileInView="animate"
+              viewport={heroViewport}
+              className="lg:col-span-7"
+            >
               <motion.div variants={fade} className="mb-8">
                 <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-slate-700 dark:text-slate-300">
                   <span className="inline-block w-2 h-2 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500" />
@@ -128,7 +126,6 @@ export default function Home() {
                 </span>
               </motion.div>
 
-              {/* Headline: typography-led */}
               <motion.h1
                 variants={fade}
                 className="text-[2.75rem] md:text-[4.25rem] lg:text-[5.2rem] font-black tracking-tight leading-[0.95] text-slate-950 dark:text-white"
@@ -136,7 +133,6 @@ export default function Home() {
                 {profile?.title}
               </motion.h1>
 
-              {/* Subhead: calm, confident */}
               <motion.p
                 variants={fade}
                 className="mt-8 text-lg md:text-xl leading-relaxed text-slate-700 dark:text-slate-300 max-w-2xl"
@@ -144,29 +140,25 @@ export default function Home() {
                 {profile?.tagline}
               </motion.p>
 
-              {/* Micro proof: fewer, stronger */}
               {Array.isArray(hero?.proofBullets) && hero.proofBullets.length > 0 && (
                 <motion.ul variants={fade} className="mt-8 space-y-3 text-slate-700 dark:text-slate-300 max-w-2xl">
-				  {hero.proofBullets.slice(0, 3).map((b, idx) => (
+                  {hero.proofBullets.slice(0, 3).map((b, idx) => (
                     <li key={idx} className="flex items-start gap-3">
                       <span className="mt-2 w-1.5 h-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 flex-shrink-0" />
                       <span className="text-[0.98rem] leading-relaxed">{b}</span>
                     </li>
-			  ))}
+                  ))}
                 </motion.ul>
               )}
 
-              {/* CTAs: no SaaS buttons — more “studio” */}
               <motion.div variants={fade} className="mt-10 flex flex-wrap items-center gap-4">
-
-                {/* Primary */}
                 {primaryResolved && (
                   primaryResolved.kind === 'internal' ? (
                     <Link
                       to={primaryResolved.to}
                       className="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-slate-950 text-white dark:bg-white dark:text-slate-950 font-extrabold tracking-tight hover:opacity-95 transition"
                     >
-	                      {primaryResolved.label ?? ''}
+                      {primaryResolved.label ?? ''}
                       <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                     </Link>
                   ) : (
@@ -176,20 +168,19 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-slate-950 text-white dark:bg-white dark:text-slate-950 font-extrabold tracking-tight hover:opacity-95 transition"
                     >
-	                      {primaryResolved.label ?? ''}
+                      {primaryResolved.label ?? ''}
                       <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                     </a>
                   )
-	                )}
+                )}
 
-                {/* Secondary */}
                 {secondaryResolved && (
                   secondaryResolved.kind === 'internal' ? (
                     <Link
                       to={secondaryResolved.to}
                       className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-300/80 dark:border-slate-700 text-slate-900 dark:text-white font-extrabold tracking-tight hover:border-slate-400 dark:hover:border-slate-600 transition"
                     >
-	                      {secondaryResolved.label ?? ''}
+                      {secondaryResolved.label ?? ''}
                       <Download className="w-4 h-4" />
                     </Link>
                   ) : (
@@ -199,13 +190,12 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-300/80 dark:border-slate-700 text-slate-900 dark:text-white font-extrabold tracking-tight hover:border-slate-400 dark:hover:border-slate-600 transition"
                     >
-	                      {secondaryResolved.label ?? ''}
+                      {secondaryResolved.label ?? ''}
                       <Download className="w-4 h-4" />
                     </a>
                   )
-	                )}
+                )}
 
-                {/* Socials: minimal */}
                 {socials.length > 0 && (
                   <div className="flex items-center gap-2 ml-1">
                     {socials.map(({ key, url, label, Icon }) => (
@@ -225,7 +215,6 @@ export default function Home() {
                 )}
               </motion.div>
 
-              {/* Signature line */}
               <motion.div variants={fade} className="mt-12">
                 <p className="text-sm text-slate-600 dark:text-slate-400">
                   {sigBeforeLocation}{' '}
@@ -240,24 +229,24 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* RIGHT: Terminal — presented like an art object */}
             <motion.div
               variants={fade}
               initial="initial"
-              animate="animate"
+              whileInView="animate"
+              viewport={heroViewport}
               className="lg:col-span-5 flex justify-center lg:justify-end"
             >
               <div className="relative">
-                {/* Frame */}
                 <div className="absolute -inset-4 rounded-[2rem] border border-slate-200/80 dark:border-slate-800 bg-white/40 dark:bg-slate-900/20 backdrop-blur-md" />
                 <div className="relative">
                   <TerminalHeroCard
-                  photoUrl={profile.photoUrl}
-                  name={profile.name}
-                  terminalTitle={hero?.terminal?.title || 'portfolio.py'}
-                  codeLineTemplate={hero?.terminal?.codeLineTemplate || hero?.terminal?.codeLine || 'print("Hello World! My name is {{name}}.")'}
-                  typingSpeedMs={hero?.terminal?.typingSpeedMs || 50}
-                />
+                    photoUrl={profile.photoUrl}
+                    name={profile.name}
+                    terminalTitle={hero?.terminal?.title || 'portfolio.py'}
+                    codeLineTemplate={hero?.terminal?.codeLineTemplate || hero?.terminal?.codeLine || 'print("Hello World! My name is {{name}}.")'}
+                    typingSpeedMs={hero?.terminal?.typingSpeedMs || 50}
+                    isActive={heroIsVisible}
+                  />
                 </div>
               </div>
             </motion.div>
@@ -265,16 +254,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Skills strip can stay — it reads like a marquee */}
       <SkillsLoopStrip />
 
-      {/* FEATURED PROJECTS (gallery vibe, less “cards grid”) */}
       <section className="py-20 bg-white dark:bg-slate-950">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="flex items-end justify-between mb-12"
           >
@@ -305,11 +292,10 @@ export default function Home() {
                 key={project.id}
                 initial={{ opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-80px' }}
+                viewport={{ once: true, amount: 0.15, margin: '0px 0px -80px 0px' }}
                 transition={{ duration: 0.55, ease: 'easeOut' }}
                 className="border-t border-slate-200 dark:border-slate-800 pt-6"
               >
-                {/* Clickable row -> navigates to Projects + focuses the same project */}
                 <div
                   role="link"
                   tabIndex={0}

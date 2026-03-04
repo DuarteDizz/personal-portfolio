@@ -1,24 +1,41 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, BookOpen, ArrowUpRight } from 'lucide-react';
 import { Badge } from '@/Components/ui/badge.jsx';
 import { useTranslation } from 'react-i18next';
+import { preloadImages, isRenderableImageSrc } from '@/utils/imagePreload';
+
+const isRenderableLink = (href) => typeof href === 'string' && href.trim().length > 0 && href.trim() !== '#';
 
 export default function ProjectCard({ project, onClick }) {
   const { t } = useTranslation();
+
+  const imageSources = useMemo(
+    () => (Array.isArray(project?.images) ? project.images.filter(isRenderableImageSrc) : []),
+    [project?.images]
+  );
+
+  const handlePreloadGallery = () => {
+    if (imageSources.length === 0) return;
+    preloadImages(imageSources, { limit: Math.min(imageSources.length, 4) });
+  };
 
   return (
     <motion.div
       whileHover={{ y: -4 }}
       className="group h-full bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:border-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/5 transition-all duration-300 cursor-pointer"
       onClick={onClick}
+      onMouseEnter={handlePreloadGallery}
+      onFocus={handlePreloadGallery}
     >
       <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800">
-        {project.images?.[0] ? (
+        {imageSources[0] ? (
           <img
-            src={project.images[0]}
+            src={imageSources[0]}
             alt={project.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -30,7 +47,7 @@ export default function ProjectCard({ project, onClick }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
         <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          {project.links?.github && (
+          {isRenderableLink(project.links?.github) && (
             <a
               href={project.links.github}
               target="_blank"
@@ -43,7 +60,7 @@ export default function ProjectCard({ project, onClick }) {
               <Github className="w-4 h-4 text-slate-700 dark:text-slate-300" />
             </a>
           )}
-          {project.links?.demo && (
+          {isRenderableLink(project.links?.demo) && (
             <a
               href={project.links.demo}
               target="_blank"

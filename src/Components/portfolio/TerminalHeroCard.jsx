@@ -1,16 +1,16 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 export default function TerminalHeroCard({
   photoUrl,
   name,
   terminalTitle = 'portfolio.py',
   codeLineTemplate = 'print("Hello World! My name is {{name}}.")',
-  typingSpeedMs = 50
+  typingSpeedMs = 50,
+  isActive = true
 }) {
   const [typedText, setTypedText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const typingIndexRef = useRef(0);
 
   const fullLine = useMemo(() => {
     const safeName = name || '';
@@ -25,25 +25,34 @@ export default function TerminalHeroCard({
       : false;
 
   useEffect(() => {
+    typingIndexRef.current = 0;
+    setTypedText('');
+    setIsTypingComplete(false);
+  }, [fullLine]);
+
+  useEffect(() => {
     if (prefersReducedMotion) {
       setTypedText(fullLine);
       setIsTypingComplete(true);
+      typingIndexRef.current = fullLine.length + 1;
       return;
     }
 
-    let currentIndex = 0;
+    if (!isActive || isTypingComplete) return;
+
     const interval = setInterval(() => {
-      if (currentIndex <= fullLine.length) {
-        setTypedText(fullLine.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        setIsTypingComplete(true);
-        clearInterval(interval);
+      if (typingIndexRef.current <= fullLine.length) {
+        setTypedText(fullLine.slice(0, typingIndexRef.current));
+        typingIndexRef.current += 1;
+        return;
       }
+
+      setIsTypingComplete(true);
+      clearInterval(interval);
     }, typingSpeedMs);
 
     return () => clearInterval(interval);
-  }, [prefersReducedMotion, fullLine, typingSpeedMs]);
+  }, [fullLine, isActive, isTypingComplete, prefersReducedMotion, typingSpeedMs]);
 
   const renderHighlightedCode = (text) => {
     if (!text) return null;
@@ -51,7 +60,6 @@ export default function TerminalHeroCard({
     const parts = [];
     let remaining = text;
 
-    // Match print keyword
     if (remaining.startsWith('print')) {
       parts.push(
         <span key="print" className="text-pink-400 font-medium">
@@ -61,7 +69,6 @@ export default function TerminalHeroCard({
       remaining = remaining.slice(5);
     }
 
-    // Match opening parenthesis
     if (remaining.startsWith('(')) {
       parts.push(
         <span key="paren1" className="text-yellow-300">
@@ -71,7 +78,6 @@ export default function TerminalHeroCard({
       remaining = remaining.slice(1);
     }
 
-    // Match string content
     if (remaining.startsWith('"')) {
       const endQuote = remaining.indexOf('"', 1);
       if (endQuote !== -1) {
@@ -92,7 +98,6 @@ export default function TerminalHeroCard({
       }
     }
 
-    // Match closing parenthesis
     if (remaining.startsWith(')')) {
       parts.push(
         <span key="paren2" className="text-yellow-300">
@@ -113,16 +118,11 @@ export default function TerminalHeroCard({
     return parts;
   };
 
+  const cursorClass = prefersReducedMotion || !isActive ? 'opacity-0' : 'animate-blink';
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6 }}
-      className="relative max-w-2xl mx-auto"
-    >
-      {/* Terminal window with macOS style */}
+    <div className="relative max-w-2xl mx-auto">
       <div className="relative rounded-xl overflow-hidden shadow-2xl">
-        {/* Chrome bar - macOS style */}
         <div className="flex items-center gap-2 px-4 py-3 bg-[#2d2d2d] border-b border-[#1a1a1a]">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-[#ff5f57] hover:bg-[#ff5f57]/80 transition-colors cursor-pointer" />
@@ -135,22 +135,18 @@ export default function TerminalHeroCard({
           <div className="w-[68px]" />
         </div>
 
-        {/* Terminal content area */}
         <div className="bg-[#1e1e1e]">
-          {/* Grid keeps the photo aligned with code content (so it won't sit under the line-number gutter) */}
           <div className="grid grid-cols-[max-content_1fr] font-mono text-[15px] leading-relaxed">
-            {/* Line numbers */}
             <div className="py-6 px-4 bg-[#1a1a1a] text-slate-600 select-none border-r border-[#2d2d2d]">
               <div>1</div>
             </div>
 
-            {/* Code content */}
             <div className="py-6 px-6">
               <div className="flex items-start">
                 <span className="text-pink-500 mr-2">›</span>
                 <div className="flex items-center">
                   {renderHighlightedCode(typedText)}
-                  <span className="inline-block w-2 h-5 bg-slate-400 ml-0.5 animate-blink" />
+                  <span className={`inline-block w-2 h-5 bg-slate-400 ml-0.5 ${cursorClass}`} />
                 </div>
               </div>
 
@@ -165,21 +161,20 @@ export default function TerminalHeroCard({
               `}</style>
             </div>
 
-            {/* Gutter spacer (matches the line-number column) */}
             <div
               className="bg-[#1a1a1a] border-r border-[#2d2d2d]"
               aria-hidden="true"
             />
 
-            {/* Photo container aligned to the code column */}
             <div className="px-6 pb-6">
               <div className="relative rounded-lg overflow-hidden border-2 border-[#2d2d2d] shadow-lg">
                 <img
                   src={photoUrl}
                   alt={name}
                   className="w-full aspect-[16/10] object-cover"
+                  loading="eager"
+                  decoding="async"
                 />
-                {/* Subtle gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
               </div>
             </div>
@@ -187,8 +182,7 @@ export default function TerminalHeroCard({
         </div>
       </div>
 
-      {/* Subtle glow effect */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 rounded-xl -z-10 blur-2xl" />
-    </motion.div>
+    </div>
   );
 }

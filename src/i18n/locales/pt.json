@@ -233,7 +233,16 @@
     },
     "tipNavigate": "para navegar •",
     "tipPrefix": "Dica:",
-    "tipSuffix": "para fechar"
+    "tipSuffix": "para fechar",
+    "gallery": {
+      "open": "Abrir galeria",
+      "openSingle": "Ampliar imagem",
+      "closeLabel": "Fechar galeria",
+      "closeHint": "para fechar a galeria",
+      "imageAlt": "Imagem {{current}} de {{total}} de {{title}}",
+      "navigateHint": "para navegar na galeria",
+      "count": "{{current}} / {{total}}"
+    }
   },
   "languageSwitcher": {
     "label": "Idioma",

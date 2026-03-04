@@ -9,6 +9,7 @@ import { Button } from '@/Components/ui/button';
 import { usePortfolioData } from '@/content/usePortfolioData';
 import ProjectCard from '@/Components/portfolio/ProjectCard';
 import ProjectModal from '@/Components/portfolio/ProjectModal';
+import { preloadImages, isRenderableImageSrc } from '@/utils/imagePreload';
 
 const parseProjectIdFromHash = (hash) => {
   if (!hash) return null;
@@ -61,6 +62,14 @@ export default function Projects() {
     setSearchQuery('');
     setSelectedTags([]);
   };
+
+  useEffect(() => {
+    const aboveTheFoldImages = filteredProjects
+      .map((project) => (Array.isArray(project?.images) ? project.images.find(isRenderableImageSrc) : null))
+      .filter(Boolean);
+
+    preloadImages(aboveTheFoldImages, { limit: 6 });
+  }, [filteredProjects]);
 
   // ✅ Handle navigation from Home: /projects#project-{id} + state.openProjectId
   useEffect(() => {

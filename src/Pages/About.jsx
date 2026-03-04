@@ -349,10 +349,12 @@ export default function About() {
                       href={profile.social.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-3 rounded-xl bg-white/70 dark:bg-slate-800/70
-                        border border-slate-200/70 dark:border-slate-700/70
-                        hover:bg-white dark:hover:bg-slate-800
-                        hover:border-cyan-500/30 transition-colors"
+                      className="p-3 rounded-xl bg-white/80 dark:bg-slate-900/70
+                        border border-slate-200/80 dark:border-slate-700/80
+                        text-slate-700 dark:text-slate-100 shadow-sm
+                        hover:bg-slate-50 dark:hover:bg-slate-800/90
+                        hover:text-cyan-700 dark:hover:text-cyan-300
+                        hover:border-cyan-500/30 dark:hover:border-cyan-400/30 transition-all"
                       aria-label="GitHub"
                     >
                       <Github className="w-5 h-5" />
@@ -364,10 +366,12 @@ export default function About() {
                       href={profile.social.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-3 rounded-xl bg-white/70 dark:bg-slate-800/70
-                        border border-slate-200/70 dark:border-slate-700/70
-                        hover:bg-white dark:hover:bg-slate-800
-                        hover:border-cyan-500/30 transition-colors"
+                      className="p-3 rounded-xl bg-white/80 dark:bg-slate-900/70
+                        border border-slate-200/80 dark:border-slate-700/80
+                        text-slate-700 dark:text-slate-100 shadow-sm
+                        hover:bg-slate-50 dark:hover:bg-slate-800/90
+                        hover:text-cyan-700 dark:hover:text-cyan-300
+                        hover:border-cyan-500/30 dark:hover:border-cyan-400/30 transition-all"
                       aria-label="LinkedIn"
                     >
                       <Linkedin className="w-5 h-5" />

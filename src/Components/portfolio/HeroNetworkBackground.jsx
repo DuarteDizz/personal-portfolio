@@ -18,9 +18,13 @@ function clamp(v, min, max) {
   return Math.max(min, Math.min(max, v));
 }
 
-export default function HeroNetworkBackground({ className = '' }) {
+export default function HeroNetworkBackground({ className = '', isActive = true }) {
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
+  const ctxRef = useRef(null);
+  const loopRef = useRef(null);
+  const drawFrameRef = useRef(null);
+  const activeRef = useRef(isActive);
 
   const stateRef = useRef({
     w: 0,
@@ -30,6 +34,7 @@ export default function HeroNetworkBackground({ className = '' }) {
     edges: [],
     pulses: [],
     lastT: 0,
+    lastDrawAt: 0,
     frame: 0,
     reduce: false
   });
@@ -41,33 +46,14 @@ export default function HeroNetworkBackground({ className = '' }) {
     const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
     if (!ctx) return;
 
+    ctxRef.current = ctx;
+
     const st = stateRef.current;
     st.reduce = prefersReducedMotion();
 
-    const resize = () => {
-      const parent = canvas.parentElement;
-      if (!parent) return;
-
-      const rect = parent.getBoundingClientRect();
-      st.w = Math.max(1, Math.floor(rect.width));
-      st.h = Math.max(1, Math.floor(rect.height));
-      st.dpr = Math.min(2, window.devicePixelRatio || 1);
-
-      canvas.width = Math.floor(st.w * st.dpr);
-      canvas.height = Math.floor(st.h * st.dpr);
-      canvas.style.width = `${st.w}px`;
-      canvas.style.height = `${st.h}px`;
-      ctx.setTransform(st.dpr, 0, 0, st.dpr, 0, 0);
-
-      initScene();
-      drawFrame(0, true);
-    };
-
     const initScene = () => {
       const area = st.w * st.h;
-
-      // Responsive node count (kept modest for perf)
-      const baseCount = Math.round(clamp(area / 28000, 28, 56)); // ~30–56
+      const baseCount = Math.round(clamp(area / 28000, 28, 56));
       const nodeCount = clamp(baseCount, 26, 60);
 
       st.nodes = [];
@@ -75,12 +61,12 @@ export default function HeroNetworkBackground({ className = '' }) {
       st.pulses = [];
       st.frame = 0;
       st.lastT = 0;
+      st.lastDrawAt = 0;
 
-      // motion scales with viewport
       const speed = clamp(Math.min(st.w, st.h) / 900, 0.65, 1.1);
 
       for (let i = 0; i < nodeCount; i++) {
-        const hub = Math.random() < 0.16; // a few larger hubs
+        const hub = Math.random() < 0.16;
         const baseR = hub ? rand(4.2, 6.2) : rand(2.0, 4.6);
         st.nodes.push({
           x: rand(0, st.w),
@@ -108,10 +94,8 @@ export default function HeroNetworkBackground({ className = '' }) {
         return;
       }
 
-      // connect each node to K nearest neighbors within threshold
       const K = 3;
       const maxDist = Math.max(220, Math.min(st.w, st.h) * 0.42);
-
       const seen = new Set();
 
       for (let i = 0; i < N; i++) {
@@ -146,14 +130,12 @@ export default function HeroNetworkBackground({ className = '' }) {
             i,
             j,
             d,
-            // small variation so lines aren't uniform
             tint: Math.random() < 0.5 ? 'cyan' : 'teal'
           });
           added++;
         }
       }
 
-      // hard cap edges for perf
       st.edges = edges.slice(0, 120);
     };
 
@@ -162,13 +144,13 @@ export default function HeroNetworkBackground({ className = '' }) {
       const maxPulses = Math.min(10, Math.max(4, Math.floor(st.nodes.length / 7)));
       if (st.pulses.length >= maxPulses) return;
 
-      const e = st.edges[Math.floor(Math.random() * st.edges.length)];
+      const edgeIndex = Math.floor(Math.random() * st.edges.length);
+      const e = st.edges[edgeIndex];
       const dir = Math.random() < 0.5 ? 1 : -1;
-
-      // speed is in px/sec roughly
       const speed = rand(90, 170);
+
       st.pulses.push({
-        edgeIndex: st.edges.indexOf(e),
+        edgeIndex,
         t: dir === 1 ? 0 : 1,
         dir,
         speed,
@@ -182,14 +164,11 @@ export default function HeroNetworkBackground({ className = '' }) {
       const w = st.w;
       const h = st.h;
 
-      // update node positions (subtle drift + bounce)
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
 
         n.x += n.vx * dt * 60;
         n.y += n.vy * dt * 60;
-
-        // gentle extra wobble (super subtle)
         n.x += Math.sin((tNow * 0.001) * (0.6 + i * 0.002)) * 0.04;
         n.y += Math.cos((tNow * 0.001) * (0.7 + i * 0.002)) * 0.04;
 
@@ -210,50 +189,46 @@ export default function HeroNetworkBackground({ className = '' }) {
         }
       }
 
-      // refresh edges occasionally (not every frame)
-      st.frame++;
+      st.frame += 1;
       if (st.frame % 14 === 0) rebuildEdges();
 
-      // spawn pulses at a low rate
-      const spawnChance = dt * 0.9; // ~0.9 pulses/sec average
+      const spawnChance = dt * 0.9;
       if (Math.random() < spawnChance) spawnPulse(tNow);
 
-      // move pulses
-      const pulses = st.pulses;
-      for (let p = pulses.length - 1; p >= 0; p--) {
-        const pulse = pulses[p];
+      for (let p = st.pulses.length - 1; p >= 0; p--) {
+        const pulse = st.pulses[p];
         const e = st.edges[pulse.edgeIndex];
         if (!e) {
-          pulses.splice(p, 1);
+          st.pulses.splice(p, 1);
           continue;
         }
 
-        // advance based on edge length
         const len = Math.max(1, e.d);
         const deltaT = (pulse.speed * dt) / len;
         pulse.t += pulse.dir * deltaT;
 
-        // reached end?
         if (pulse.t >= 1 || pulse.t <= 0) {
           const dstIndex = pulse.dir === 1 ? e.j : e.i;
           const dst = st.nodes[dstIndex];
           if (dst) dst.pingUntil = tNow + rand(160, 240);
-          pulses.splice(p, 1);
+          st.pulses.splice(p, 1);
         }
       }
     };
 
     const drawFrame = (tNow, isStatic = false) => {
+      const localCtx = ctxRef.current;
+      if (!localCtx) return;
+
       const { w, h, nodes, edges, pulses } = st;
       if (w <= 1 || h <= 1) return;
 
       const dark = isDarkMode();
 
-      ctx.clearRect(0, 0, w, h);
+      localCtx.clearRect(0, 0, w, h);
 
-      // --- edges ---
       const maxDist = Math.max(220, Math.min(w, h) * 0.42);
-      ctx.lineCap = 'round';
+      localCtx.lineCap = 'round';
 
       for (let k = 0; k < edges.length; k++) {
         const e = edges[k];
@@ -262,35 +237,32 @@ export default function HeroNetworkBackground({ className = '' }) {
         if (!a || !b) continue;
 
         const strength = clamp(1 - e.d / maxDist, 0, 1);
-
-        // cyan/teal with subtle variation
         const baseA = dark ? 0.14 : 0.18;
         const alpha = baseA * (0.25 + 0.75 * strength);
 
-        const cyan = `rgba(34,211,238,${alpha})`;
-        const teal = `rgba(20,184,166,${alpha})`;
-        ctx.strokeStyle = e.tint === 'cyan' ? cyan : teal;
+        localCtx.strokeStyle =
+          e.tint === 'cyan'
+            ? `rgba(34,211,238,${alpha})`
+            : `rgba(20,184,166,${alpha})`;
 
-        ctx.lineWidth = 1.0;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
+        localCtx.lineWidth = 1.0;
+        localCtx.beginPath();
+        localCtx.moveTo(a.x, a.y);
+        localCtx.lineTo(b.x, b.y);
+        localCtx.stroke();
 
-        // faint glow pass (cheap)
         const glowA = dark ? alpha * 0.45 : alpha * 0.35;
-        ctx.strokeStyle =
+        localCtx.strokeStyle =
           e.tint === 'cyan'
             ? `rgba(34,211,238,${glowA})`
             : `rgba(20,184,166,${glowA})`;
-        ctx.lineWidth = 2.2;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.stroke();
+        localCtx.lineWidth = 2.2;
+        localCtx.beginPath();
+        localCtx.moveTo(a.x, a.y);
+        localCtx.lineTo(b.x, b.y);
+        localCtx.stroke();
       }
 
-      // --- pulses ---
       for (let p = 0; p < pulses.length; p++) {
         const pulse = pulses[p];
         const e = edges[pulse.edgeIndex];
@@ -300,41 +272,35 @@ export default function HeroNetworkBackground({ className = '' }) {
         const b = nodes[e.j];
         if (!a || !b) continue;
 
-        const t = clamp(pulse.t, 0, 1);
-        const x = a.x + (b.x - a.x) * t;
-        const y = a.y + (b.y - a.y) * t;
-
+        const edgeT = clamp(pulse.t, 0, 1);
+        const x = a.x + (b.x - a.x) * edgeT;
+        const y = a.y + (b.y - a.y) * edgeT;
         const alpha = dark ? 0.55 : 0.50;
-        const col =
+
+        localCtx.fillStyle =
           pulse.tint === 'cyan'
             ? `rgba(34,211,238,${alpha})`
             : `rgba(20,184,166,${alpha})`;
+        localCtx.beginPath();
+        localCtx.arc(x, y, 2.0, 0, Math.PI * 2);
+        localCtx.fill();
 
-        ctx.fillStyle = col;
-        ctx.beginPath();
-        ctx.arc(x, y, 2.0, 0, Math.PI * 2);
-        ctx.fill();
-
-        // tiny halo
-        ctx.fillStyle =
+        localCtx.fillStyle =
           pulse.tint === 'cyan'
             ? `rgba(34,211,238,${alpha * 0.22})`
             : `rgba(20,184,166,${alpha * 0.22})`;
-        ctx.beginPath();
-        ctx.arc(x, y, 5.0, 0, Math.PI * 2);
-        ctx.fill();
+        localCtx.beginPath();
+        localCtx.arc(x, y, 5.0, 0, Math.PI * 2);
+        localCtx.fill();
       }
 
-      // --- nodes ---
       const timeSec = tNow * 0.001;
 
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
-
         const breathe = 1 + n.breathAmp * Math.sin(timeSec * n.breathSpd + n.breathPh);
         let r = n.baseR * breathe;
 
-        // ping effect when pulse reaches node
         if (!isStatic && n.pingUntil > tNow) {
           const tLeft = (n.pingUntil - tNow) / 220;
           const ping = clamp(tLeft, 0, 1);
@@ -344,78 +310,142 @@ export default function HeroNetworkBackground({ className = '' }) {
         const coreAlpha = dark ? 0.55 : 0.48;
         const glowAlpha = dark ? 0.16 : 0.12;
 
-        const cyanCore = `rgba(34,211,238,${coreAlpha})`;
-        const tealCore = `rgba(20,184,166,${coreAlpha})`;
-        const core = n.tint === 'cyan' ? cyanCore : tealCore;
+        localCtx.fillStyle =
+          n.tint === 'cyan'
+            ? `rgba(34,211,238,${glowAlpha})`
+            : `rgba(20,184,166,${glowAlpha})`;
+        localCtx.beginPath();
+        localCtx.arc(n.x, n.y, r * 3.2, 0, Math.PI * 2);
+        localCtx.fill();
 
-        const cyanGlow = `rgba(34,211,238,${glowAlpha})`;
-        const tealGlow = `rgba(20,184,166,${glowAlpha})`;
-        const glow = n.tint === 'cyan' ? cyanGlow : tealGlow;
-
-        // glow
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, r * 3.2, 0, Math.PI * 2);
-        ctx.fill();
-
-        // core
-        ctx.fillStyle = core;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
-        ctx.fill();
+        localCtx.fillStyle =
+          n.tint === 'cyan'
+            ? `rgba(34,211,238,${coreAlpha})`
+            : `rgba(20,184,166,${coreAlpha})`;
+        localCtx.beginPath();
+        localCtx.arc(n.x, n.y, r, 0, Math.PI * 2);
+        localCtx.fill();
       }
     };
 
+    const resize = () => {
+      const parent = canvas.parentElement;
+      const localCtx = ctxRef.current;
+      if (!parent || !localCtx) return;
+
+      const rect = parent.getBoundingClientRect();
+      st.w = Math.max(1, Math.floor(rect.width));
+      st.h = Math.max(1, Math.floor(rect.height));
+      st.dpr = Math.min(2, window.devicePixelRatio || 1);
+
+      canvas.width = Math.floor(st.w * st.dpr);
+      canvas.height = Math.floor(st.h * st.dpr);
+      canvas.style.width = `${st.w}px`;
+      canvas.style.height = `${st.h}px`;
+      localCtx.setTransform(st.dpr, 0, 0, st.dpr, 0, 0);
+
+      initScene();
+      drawFrame(performance.now(), true);
+    };
+
+    const targetFrameMs = 1000 / 30;
+
     const loop = (tNow) => {
-      if (document.hidden) {
+      if (!activeRef.current || st.reduce || document.hidden) {
+        rafRef.current = null;
+        st.lastT = 0;
+        st.lastDrawAt = 0;
+        drawFrame(tNow || performance.now(), true);
+        return;
+      }
+
+      if (st.lastDrawAt && tNow - st.lastDrawAt < targetFrameMs) {
         rafRef.current = requestAnimationFrame(loop);
         return;
       }
 
-      const dt = st.lastT ? clamp((tNow - st.lastT) / 1000, 0, 0.05) : 0.016;
+      const dt = st.lastT ? clamp((tNow - st.lastT) / 1000, 0, 0.05) : targetFrameMs / 1000;
       st.lastT = tNow;
+      st.lastDrawAt = tNow;
 
-      if (!st.reduce) step(dt, tNow);
-      drawFrame(tNow, st.reduce);
+      step(dt, tNow);
+      drawFrame(tNow, false);
 
       rafRef.current = requestAnimationFrame(loop);
     };
 
+    drawFrameRef.current = drawFrame;
+    loopRef.current = loop;
+
     const onVisibility = () => {
-      // when tab becomes visible again, reset timing so dt doesn't spike
       st.lastT = 0;
+      st.lastDrawAt = 0;
+
+      if (!document.hidden && activeRef.current && !st.reduce && !rafRef.current && loopRef.current) {
+        rafRef.current = requestAnimationFrame(loopRef.current);
+      }
     };
 
     const onMotionPref = () => {
       st.reduce = prefersReducedMotion();
-      drawFrame(performance.now(), true);
+      st.lastT = 0;
+      st.lastDrawAt = 0;
+
+      if (st.reduce && rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+
+      drawFrameRef.current?.(performance.now(), true);
+
+      if (!st.reduce && activeRef.current && !document.hidden && !rafRef.current && loopRef.current) {
+        rafRef.current = requestAnimationFrame(loopRef.current);
+      }
     };
 
     const mm = window.matchMedia?.('(prefers-reduced-motion: reduce)');
     mm?.addEventListener?.('change', onMotionPref);
     document.addEventListener('visibilitychange', onVisibility);
-
     window.addEventListener('resize', resize, { passive: true });
-    resize();
 
-    rafRef.current = requestAnimationFrame(loop);
+    resize();
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      loopRef.current = null;
+      drawFrameRef.current = null;
       window.removeEventListener('resize', resize);
       document.removeEventListener('visibilitychange', onVisibility);
       mm?.removeEventListener?.('change', onMotionPref);
     };
   }, []);
 
+  useEffect(() => {
+    activeRef.current = isActive;
+
+    const st = stateRef.current;
+    st.lastT = 0;
+    st.lastDrawAt = 0;
+
+    if (!isActive) {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      drawFrameRef.current?.(performance.now(), true);
+      return;
+    }
+
+    if (!st.reduce && !document.hidden && !rafRef.current && loopRef.current) {
+      rafRef.current = requestAnimationFrame(loopRef.current);
+    }
+  }, [isActive]);
+
   return (
     <div aria-hidden className={`absolute inset-0 pointer-events-none ${className}`}>
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
-
-      {/* soft glass wash (keeps it modern + readable) */}
       <div className="absolute inset-0 bg-white/[0.06] dark:bg-slate-950/[0.04] backdrop-blur-[2px]" />
-
-      {/* vignette/fade so background doesn’t compete with content */}
       <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-transparent to-white/70 dark:from-slate-950/70 dark:to-slate-950/70" />
     </div>
   );

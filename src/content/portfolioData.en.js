@@ -263,31 +263,40 @@ export const aboutBlocks = [
 
 export const projects = [
   {
-    id: "customer-churn",
-    title: "Customer Churn Prediction",
-    shortDescription: "ML system predicting customer churn with explainable AI insights using SHAP values for a telecom company.",
-    impactStatement: "Reduced customer churn by 23% through proactive retention campaigns",
-    problem: "A major telecom provider was losing $2M annually due to unexpected customer churn. The existing rule-based system had low accuracy and couldn't identify at-risk customers early enough for intervention.",
-    approach: "Built an end-to-end ML pipeline using XGBoost with careful feature engineering from customer behavior data. Implemented SHAP for model interpretability, allowing the business team to understand why each customer was flagged. Created a real-time scoring API and integrated with the CRM for automated alerts.",
-    results: "The model achieved 0.89 AUC-ROC on holdout data. More importantly, the retention team was able to intervene with 78% of flagged customers before they churned, resulting in $460K quarterly savings.",
-    metrics: [
-      { label: "AUC-ROC", value: "0.89" },
-      { label: "Churn Reduction", value: "23%" },
-      { label: "Quarterly Savings", value: "$460K" },
-      { label: "Precision@10%", value: "0.72" }
-    ],
-    techStack: ["Python", "XGBoost", "SHAP", "FastAPI", "PostgreSQL", "Docker", "Airflow"],
-    tags: ["Classification", "Explainable AI", "Production ML"],
-    links: { github: "https://github.com", blog: "#" },
-    images: [
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
-    ],
-    whatIdImprove: "Would add survival analysis for time-to-churn predictions. Also exploring transformer-based approaches for sequential customer behavior modeling.",
-    reproducibility: "Clone the repo, run `docker-compose up` to start the environment. Sample data included. See README for full setup instructions.",
-    featured: true,
-    caseStudy: true
-  }
+  id: "movie-knowledge-graph-explorer",
+  title: "AI-Powered Movie Knowledge Graph Explorer",
+  shortDescription: "End-to-end AI application that lets users query a movie knowledge graph in natural language, converting questions into safe, validated Cypher queries over Neo4j.",
+  impactStatement: "Designed and delivered a production-minded AI data app that combines LLM orchestration, graph databases, and a user-friendly interface for intuitive data exploration and recommendations.",
+  problem: "Exploring movie and entertainment datasets typically requires technical knowledge of query languages and database structure, which creates friction for non-technical users. The goal was to build an accessible application that could translate natural-language questions into reliable graph queries while maintaining safety, transparency, and control over database access.",
+  approach: "Built an end-to-end solution that cleans and structures raw movie metadata into a Neo4j knowledge graph, modeling titles, people, genres, and relationship links. Implemented an LLM-driven multi-step workflow to interpret user intent, generate Cypher, validate queries before execution, and return readable answers. Wrapped the full experience in a Streamlit app with Dockerized setup, environment-based configuration, and automated test coverage for reproducibility and maintainability.",
+  results: "Delivered a fully functional portfolio project that demonstrates applied AI engineering, graph data modeling, and product-oriented implementation. The solution indexes 5,239 cleaned titles, processes 76,531 credit rows, represents 53,604 unique people, and supports natural-language discovery and recommendation workflows through a safe Text2Cypher pipeline.",
+  metrics: [
+    { label: "Titles Indexed", value: "5.2K" },
+    { label: "Credit Rows Processed", value: "76.5K" },
+    { label: "Unique People", value: "53.6K" },
+    { label: "Genres Modeled", value: "19" }
+  ],
+  techStack: ["Python", "Neo4j", "Strands", "LangChain", "Streamlit", "Pandas", "Docker"],
+  tags: ["LLM Applications", "Knowledge Graphs", "AI Engineering", "Data Products"],
+  links: {
+    github: "YOUR_GITHUB_LINK_HERE",
+    blog: ""
+  },
+  images: [
+    "https://i.ibb.co/8gjZ35kS/imagem-2026-03-04-032632150.png",
+    "https://i.ibb.co/ksvfwqzp/imagem-2026-03-04-032110513.png"
+  ],
+  whatIdImprove: [
+  "Add support for multiple LLM providers and models, including open-source alternatives, to improve flexibility and reduce vendor dependency.",
+  "Enhance similarity search and recommendation quality by incorporating description-based embeddings.",
+  "Improve transparency by streaming the LLM response generation process and surfacing intermediate steps in a user-friendly way.",
+  "Redesign the experience into a chat-first interface to make interactions more intuitive and conversational.",
+  "Implement robust automated test coverage to improve reliability, maintainability, and confidence in future changes."
+  ],
+  reproducibility: "Clone the repository, configure the environment variables from .env.example, connect your OpenAI and Neo4j credentials, and run `docker compose up -d --build`. The project can also be executed locally for development and testing.",
+  featured: true,
+  caseStudy: false
+}
 ];
 
 export const experience = [

@@ -542,7 +542,7 @@ function SkillSheet({ skill, onClose, getRelatedProjects }) {
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-6 md:px-8 py-8">
           <div className="grid lg:grid-cols-12 gap-10">
             {/* Left */}
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-12">
               <div className="flex items-start gap-4 mb-8">
                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-teal-500/10 border border-cyan-500/15 dark:border-cyan-500/20 flex items-center justify-center flex-shrink-0">
                   <Icon className="w-6 h-6 text-cyan-700 dark:text-cyan-300" />
@@ -607,40 +607,6 @@ function SkillSheet({ skill, onClose, getRelatedProjects }) {
               )}
             </div>
 
-            {/* Right */}
-            <aside className="lg:col-span-5">
-              <div className="lg:sticky lg:top-6 space-y-6">
-                <div className="rounded-[1.5rem] border border-slate-200/70 dark:border-slate-800/70 bg-white/70 dark:bg-slate-950/40 backdrop-blur-md p-6">
-                  <p className="text-sm font-extrabold tracking-tight text-slate-950 dark:text-white mb-3">
-                    {t('skills.modal.right.howShowsTitle')}
-                  </p>
-                  <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                    {t('skills.modal.right.howShowsBody')}
-                  </p>
-
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    <span className="text-xs px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 text-slate-700 dark:text-slate-300">
-                      {t('skills.modal.right.chips.production')}
-                    </span>
-                    <span className="text-xs px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 text-slate-700 dark:text-slate-300">
-                      {t('skills.modal.right.chips.interfaces')}
-                    </span>
-                    <span className="text-xs px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 text-slate-700 dark:text-slate-300">
-                      {t('skills.modal.right.chips.evidence')}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="rounded-[1.5rem] border border-slate-200/70 dark:border-slate-800/70 bg-gradient-to-br from-cyan-500/8 via-transparent to-teal-500/8 p-6">
-                  <p className="text-sm font-extrabold tracking-tight text-slate-950 dark:text-white">
-                    {t('skills.modal.right.smallSignalTitle')}
-                  </p>
-                  <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                    {t('skills.modal.right.smallSignalBody')}
-                  </p>
-                </div>
-              </div>
-            </aside>
           </div>
         </div>
       </motion.div>

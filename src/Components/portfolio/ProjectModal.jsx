@@ -19,6 +19,9 @@ import { usePortfolioData } from '@/content/usePortfolioData';
 import { useTranslation } from 'react-i18next'
 
 const hasText = (v) => typeof v === 'string' && v.trim().length > 0;
+const hasContent = (v) =>
+  hasText(v) ||
+  (Array.isArray(v) && v.some((item) => typeof item === 'string' && item.trim().length > 0));
 
 const parseProjectId = (v) => (v === null || v === undefined ? '' : String(v));
 
@@ -322,12 +325,12 @@ export default function ProjectModal({ project, onClose }) {
                     <StorySection n="02" title={t('projectModal.sections.approach')} content={data.approach} />
                     <StorySection n="03" title={t('projectModal.sections.results')} content={data.results} />
 
-                    {(hasText(data.whatIdImprove) || hasText(data.reproducibility)) && (
+                    {(hasContent(data.whatIdImprove) || hasContent(data.reproducibility)) && (
                       <div className="mt-10 pt-8 border-t border-slate-200/70 dark:border-slate-800/70 space-y-8">
-                        {hasText(data.whatIdImprove) && (
+                        {hasContent(data.whatIdImprove) && (
                           <StorySection n="04" title={t('projectModal.sections.improve')} content={data.whatIdImprove} />
                         )}
-                        {hasText(data.reproducibility) && (
+                        {hasContent(data.reproducibility) && (
                           <StorySection n="05" title={t('projectModal.sections.repro')} content={data.reproducibility} />
                         )}
                       </div>
@@ -427,7 +430,13 @@ export default function ProjectModal({ project, onClose }) {
 function StorySection({ n, title, content }) {
   if (!content) return null;
 
-  const isList = Array.isArray(content);
+  const normalizedContent = Array.isArray(content)
+    ? content.filter((item) => typeof item === 'string' && item.trim().length > 0)
+    : content;
+  const isList = Array.isArray(normalizedContent);
+
+  if (isList && normalizedContent.length === 0) return null;
+  if (!isList && !hasText(normalizedContent)) return null;
 
   // Subtle, premium accent (varies slightly by section number)
   const accentByN = {
@@ -460,7 +469,7 @@ function StorySection({ n, title, content }) {
           <div className="mt-4">
             {isList ? (
               <ul className="space-y-3">
-                {content.map((item, idx) => (
+                {normalizedContent.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-slate-700 dark:text-slate-300">
                     <span
                       className={`mt-2 w-1.5 h-1.5 rounded-full bg-gradient-to-r ${accent} flex-shrink-0`}
@@ -472,7 +481,7 @@ function StorySection({ n, title, content }) {
               </ul>
             ) : (
               <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-[1.02rem]">
-                {content}
+                {normalizedContent}
               </p>
             )}
           </div>

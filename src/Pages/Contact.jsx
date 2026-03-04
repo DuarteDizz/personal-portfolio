@@ -201,7 +201,7 @@ export default function Contact() {
                             type="button"
                             variant="outline"
                             onClick={handleCopy}
-                            className="rounded-xl border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-950/40"
+                            className="rounded-xl border-slate-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-900/70 text-slate-700 dark:text-slate-100 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800/90 hover:text-cyan-700 dark:hover:text-cyan-300 hover:border-cyan-500/30 dark:hover:border-cyan-400/30 transition-all"
                             aria-label={t('contact.blocks.email.copyAria')}
                           >
                             <AnimatePresence mode="wait" initial={false}>

@@ -238,7 +238,16 @@
     },
     "tipNavigate": "to navigate •",
     "tipPrefix": "Tip:",
-    "tipSuffix": "to close"
+    "tipSuffix": "to close",
+    "gallery": {
+      "open": "Open gallery",
+      "openSingle": "Expand image",
+      "closeLabel": "Close gallery",
+      "closeHint": "to close the gallery",
+      "imageAlt": "Image {{current}} of {{total}} for {{title}}",
+      "navigateHint": "to navigate the gallery",
+      "count": "{{current}} / {{total}}"
+    }
   },
   "languageSwitcher": {
     "label": "Language",

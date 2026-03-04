@@ -281,10 +281,16 @@ export const projects = [
     tags: ["Classification", "Explainable AI", "Production ML"],
     links: { github: "https://github.com", blog: "#" },
     images: [
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
+      "https://i.ibb.co/8gjZ35kS/imagem-2026-03-04-032632150.png",
+      "https://i.ibb.co/ksvfwqzp/imagem-2026-03-04-032110513.png"
     ],
-    whatIdImprove: "Eu adicionaria análise de sobrevivência para prever o tempo até o churn. Também estou explorando abordagens baseadas em transformers para modelar o comportamento sequencial dos clientes.",
+    whatIdImprove: [
+    "Adicionar suporte a múltiplos provedores e modelos de LLM, incluindo alternativas open source, para aumentar a flexibilidade e reduzir dependência de fornecedor.",
+    "Melhorar a busca por similaridade e a qualidade das recomendações com o uso de embeddings baseados em descrições.",
+    "Aumentar a transparência ao exibir a geração da resposta do LLM em streaming e apresentar etapas intermediárias de forma amigável.",
+    "Redesenhar a experiência em uma interface orientada a chat, tornando a interação mais intuitiva e conversacional.",
+    "Implementar uma cobertura robusta de testes automatizados para aumentar a confiabilidade, a manutenibilidade e a segurança em futuras evoluções."
+    ],
     reproducibility: "Clone o repositório e execute `docker-compose up` para iniciar o ambiente. Dados de exemplo inclusos. Veja o README para instruções completas de setup.",
     featured: true,
     caseStudy: true
