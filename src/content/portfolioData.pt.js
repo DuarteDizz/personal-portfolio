@@ -16,7 +16,7 @@ export const profile = {
   photoUrl: "https://i.imgur.com/CE4b10B.png",
   email: "duartediego.ds@gmail.com",
   location: "Belo Horizonte, MG",
-  resumeUrl: "https://drive.google.com/file/d/1i9wFEUe790MXcALV9XRv94qW98AmVqrC/view?usp=sharing",
+  resumeUrl: "https://drive.google.com/uc?export=download&id=1i9wFEUe790MXcALV9XRv94qW98AmVqrC",
   status: "Aberto a oportunidades",
   bio:
     "Sou um Cientista de Dados com ~3 anos de experiência desenvolvendo produtos de Dados e IA ponta a ponta, da ingestão e tratamento de dados à modelagem, validação e entrega de impacto para o negócio, conectando Python, SQL, Machine Learning e IA Generativa (LLMs, RAG e agentes/sistemas multiagentes).",
