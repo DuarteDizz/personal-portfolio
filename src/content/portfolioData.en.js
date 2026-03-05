@@ -16,7 +16,7 @@ export const profile = {
   photoUrl: "https://i.imgur.com/CE4b10B.png",
   email: "duartediego.ds@gmail.com",
   location: "Belo Horizonte, MG",
-  resumeUrl: "https://drive.google.com/file/d/1i9wFEUe790MXcALV9XRv94qW98AmVqrC/view?usp=sharing",
+  resumeUrl: "https://drive.google.com/uc?export=download&id=1i9wFEUe790MXcALV9XRv94qW98AmVqrC",
   status: "Open to opportunities",
   bio: "I am a Data Scientist with ~3 years of experience developing end-to-end Data and AI products, from data ingestion and processing to modeling, validation, and delivering business impact, connecting Python, SQL, Machine Learning, and Generative AI (LLMs, RAG, and agents/multi-agent systems).",
   social: {
