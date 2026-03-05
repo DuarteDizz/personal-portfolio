@@ -34,7 +34,7 @@ export const hero = {
   },
   ctas: [
     { label: "View Projects", page: "Projects", variant: "primary" },
-    { label: "Download Resume", url: "#", variant: "secondary", external: true }
+    { label: "Download Resume", url: profile.resumeUrl, variant: "secondary", external: true }
   ],
   signature: {
     beforeLocation: "Based in",

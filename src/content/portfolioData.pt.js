@@ -35,7 +35,7 @@ export const hero = {
   },
   ctas: [
     { label: "Ver Projetos", page: "Projects", variant: "primary" },
-    { label: "Baixar Currículo", url: "#", variant: "secondary", external: true }
+    { label: "Baixar Currículo", url: profile.resumeUrl, variant: "secondary", external: true }
   ],
   signature: {
     beforeLocation: "Baseado em",
