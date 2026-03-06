@@ -280,7 +280,7 @@ export const projects = [
   techStack: ["Python", "Neo4j", "Strands", "LangChain", "Text2Cypher", "Streamlit", "Pandas", "Docker"],
   tags: ["Aplicações com LLM", "Grafos de Conhecimento", "Engenharia de IA", "Produtos de Dados"],
   links: {
-    github: "",
+    github: "https://github.com/DuarteDizz/movie-kg-explorer",
     blog: ""
   },
   images: [
