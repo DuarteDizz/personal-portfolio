@@ -297,6 +297,75 @@ export const projects = [
   reproducibility: "Para reproduzir o projeto, basta clonar o repositório, configurar as variáveis de ambiente com base no arquivo .env.example, conectar as credenciais da OpenAI e do Neo4j, e executar `docker compose up -d --build`. O projeto também pode ser executado localmente para desenvolvimento e testes.",
   featured: true,
   caseStudy: false
+  },
+
+  {
+  id: "ockham-ml-experimentation-workbench",
+  title: "Ockham - Workbench de Experimentação e Ranking de Modelos em ML",
+  shortDescription:
+    "Aplicação full-stack em React + FastAPI para estruturar fluxos de experimentação em machine learning tabular, comparar modelos de forma interpretável e apoiar decisões com ranking baseado em evidências e recomendação assistida por LLM.",
+
+  impactStatement:
+    "Concebi e desenvolvi um workbench de experimentação em machine learning com posicionamento orientado a decisão, superando leaderboards puramente métricos ao integrar Optuna, diagnósticos analíticos e uma camada de ranking baseada em evidências em uma stack reprodutível e local-first.",
+
+  problem:
+    "Em cenários reais de machine learning, a escolha do melhor modelo raramente depende apenas do maior score. Ainda assim, grande parte dos fluxos de experimentação permanece restrita a notebooks, scripts isolados ou tabelas planas de métricas, dificultando a análise de trade-offs e a construção de uma justificativa técnica mais robusta. O Ockham nasceu para transformar esse processo em uma experiência guiada de produto, centralizando execução, comparação, diagnóstico e suporte à decisão em uma única interface.",
+
+  approach:
+    "Desenvolvi uma plataforma ponta a ponta com frontend em React e backend em FastAPI voltada à experimentação tabular a partir de datasets em CSV. A solução contempla upload de dados, configuração de experimentos, busca e avaliação de modelos com Optuna, ranking por desempenho e uma camada estruturada de evidências que compara os candidatos sob múltiplas perspectivas, incluindo desempenho preditivo, comportamento computacional, eficiência no uso de variáveis e simplicidade estrutural. Como diferencial, adicionei uma trilha opcional com LangChain + Ollama para permitir que uma LLM avalie um payload estruturado e recomende a alternativa mais defensável entre os modelos analisados.",
+
+  results:
+    "O resultado foi um produto enxuto, mas concebido com mentalidade de produção, capaz de suportar fluxos de classificação e regressão, persistir datasets e metadados localmente, disponibilizar leaderboards e painéis diagnósticos e oferecer duas lentes complementares de decisão: score ranking e Ockham ranking. Como peça de portfólio, o projeto evidencia capacidade de engenharia de ML full-stack, preocupação com reprodutibilidade e foco em comparabilidade interpretável entre modelos.",
+
+  metrics: [
+    { label: "Modelos Implementados", value: "13" },
+    { label: "Tipos de Problema", value: "Classificação e Regressão" },
+    { label: "Camadas de Ranking", value: "Score Ranking + Ockham Ranking" },
+    { label: "Stack da Aplicação", value: "React + FastAPI" }
+  ],
+
+  techStack: [
+    "Python",
+    "FastAPI",
+    "React",
+    "Optuna",
+    "SQLite",
+    "LangChain",
+    "Ollama",
+    "Docker"
+  ],
+
+  tags: [
+    "Engenharia de ML",
+    "Plataformas de Experimentação",
+    "Aplicações com LLM",
+    "Avaliação de Modelos"
+  ],
+
+  links: {
+    github: "https://github.com/DuarteDizz/ockham",
+    blog: ""
+  },
+
+  images: [
+    "https://i.ibb.co/dsZ7KXdj/hero-dashboard.png",
+    "https://i.ibb.co/GvsC4c4p/diagnostics-panel.png",
+    "https://i.ibb.co/wNv4HR8F/experiment-setup.png"
+  ],
+
+  whatIdImprove: [
+    "Implementar o 'Ockham Lab', um ambiente assistido por IA capaz de recomendar estratégias de modelagem com base nas características do dataset e incorporar novas funcionalidades analíticas ao longo do tempo.",
+    "Ampliar o catálogo de modelos de regressão e classificação, além de incluir novas capacidades de machine learning, como clustering.",
+    "Expandir o suporte além de LLMs locais, incorporando provedores de LLM via API.",
+    "Adicionar uma funcionalidade assistida por IA para pré-processamento de datasets diretamente na aplicação.",
+    "Suportar formatos adicionais de entrada e fluxos de ingestão mais avançados além de arquivos CSV."
+  ],
+
+  reproducibility:
+    "Clone o repositório, crie o arquivo de ambiente a partir do .env.example, configure as variáveis do backend e do frontend e execute `docker compose up -d --build` para subir a stack completa. Para desenvolvimento local, o backend pode ser iniciado com `uv run fastapi dev main.py` e o frontend com `npm run dev`.",
+
+  featured: true,
+  caseStudy: false
   }
 ];
 

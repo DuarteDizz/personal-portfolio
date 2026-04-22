@@ -296,7 +296,73 @@ export const projects = [
   reproducibility: "Clone the repository, configure the environment variables from .env.example, connect your OpenAI and Neo4j credentials, and run `docker compose up -d --build`. The project can also be executed locally for development and testing.",
   featured: true,
   caseStudy: false
-}
+  },
+
+  {
+    id: "ockham-ml-experimentation-workbench",
+    title: "Ockham - ML Experimentation and Model Ranking Workbench",
+    shortDescription:
+      "Full-stack React + FastAPI application for structured tabular ML experimentation, model comparison, and evidence-based ranking with an optional LLM-assisted recommendation layer.",
+    impactStatement:
+      "Designed and delivered a product-oriented ML experimentation workbench that goes beyond metric-only leaderboards, combining Optuna-backed training, diagnostics, and evidence-based model ranking in a reproducible local-first stack.",
+    problem:
+      "In many real ML workflows, model selection gets buried in notebooks, scripts, or flat metric tables. That makes it harder to compare tradeoffs clearly and defend why one candidate should be chosen over another. The goal of Ockham was to turn tabular experimentation into a guided product workflow where users can upload data, run candidate models, inspect diagnostics, and compare both pure performance and broader decision evidence in one interface.",
+    approach:
+      "Built an end-to-end experimentation platform with a React frontend and FastAPI backend for CSV-based machine learning workflows. Implemented dataset upload, experiment configuration, Optuna-backed model search and evaluation, score-based ranking, and an evidence assembly layer that compares models through predictive performance, execution behavior, feature efficiency, and structural simplicity. Added an optional LangChain + Ollama path so an LLM can consume a structured evidence payload and recommend the most defensible overall tradeoff.",
+    results:
+      "Delivered a compact but production-minded ML experimentation product that supports both classification and regression workflows, persists datasets and experiment metadata locally, exposes leaderboard and diagnostics views, and offers two complementary ranking perspectives: score ranking and Ockham ranking. The result is a portfolio-ready application that demonstrates full-stack ML engineering, local reproducibility, and interpretable model comparison.",
+
+    metrics: [
+      { label: "Models Implemented", value: "13" },
+      { label: "Problem Types", value: "Classification and Regression" },
+      { label: "Ranking Layers", value: "Score Ranking + Ockham Ranking" },
+      { label: "App Stack", value: "React + FastAPI" }
+    ],
+
+    techStack: [
+      "Python",
+      "FastAPI",
+      "React",
+      "Optuna",
+      "SQLite",
+      "LangChain",
+      "Ollama",
+      "Docker"
+    ],
+
+    tags: [
+      "ML Engineering",
+      "Experimentation Platforms",
+      "LLM Applications",
+      "Model Evaluation"
+    ],
+
+    links: {
+      github: "https://github.com/DuarteDizz/ockham",
+      blog: ""
+    },
+
+    images: [
+      "https://i.ibb.co/dsZ7KXdj/hero-dashboard.png",
+      "https://i.ibb.co/GvsC4c4p/diagnostics-panel.png",
+      "https://i.ibb.co/wNv4HR8F/experiment-setup.png"
+    ],
+
+    whatIdImprove: [
+      "Create 'Ockham Lab', an AI-assisted environment to recommend model usage based on dataset characteristics, with additional intelligent features over time.",
+      "Expand support for regression and classification models, as well as additional ML capabilities such as clustering.",
+      "Go beyond local LLMs and add support for API-based LLM providers.",
+      "Create an AI-assisted utility to preprocess datasets directly inside the app.",
+      "Support additional dataset formats and richer ingestion flows beyond CSV-only uploads."
+    ],
+
+    reproducibility:
+      "Clone the repository, create the environment file from .env.example, configure the backend and frontend variables, and run `docker compose up -d --build` for the full stack. For local development, the backend can be started with `uv run fastapi dev main.py` and the frontend with `npm run dev`.",
+
+    featured: true,
+    caseStudy: false
+  }
+
 ];
 
 export const experience = [
