@@ -299,69 +299,80 @@ export const projects = [
   },
 
   {
-    id: "ockham-ml-experimentation-workbench",
-    title: "Ockham - ML Experimentation and Model Ranking Workbench",
-    shortDescription:
-      "Full-stack React + FastAPI application for structured tabular ML experimentation, model comparison, and evidence-based ranking with an optional LLM-assisted recommendation layer.",
-    impactStatement:
-      "Designed and delivered a product-oriented ML experimentation workbench that goes beyond metric-only leaderboards, combining Optuna-backed training, diagnostics, and evidence-based model ranking in a reproducible local-first stack.",
-    problem:
-      "In many real ML workflows, model selection gets buried in notebooks, scripts, or flat metric tables. That makes it harder to compare tradeoffs clearly and defend why one candidate should be chosen over another. The goal of Ockham was to turn tabular experimentation into a guided product workflow where users can upload data, run candidate models, inspect diagnostics, and compare both pure performance and broader decision evidence in one interface.",
-    approach:
-      "Built an end-to-end experimentation platform with a React frontend and FastAPI backend for CSV-based machine learning workflows. Implemented dataset upload, experiment configuration, Optuna-backed model search and evaluation, score-based ranking, and an evidence assembly layer that compares models through predictive performance, execution behavior, feature efficiency, and structural simplicity. Added an optional LangChain + Ollama path so an LLM can consume a structured evidence payload and recommend the most defensible overall tradeoff.",
-    results:
-      "Delivered a compact but production-minded ML experimentation product that supports both classification and regression workflows, persists datasets and experiment metadata locally, exposes leaderboard and diagnostics views, and offers two complementary ranking perspectives: score ranking and Ockham ranking. The result is a portfolio-ready application that demonstrates full-stack ML engineering, local reproducibility, and interpretable model comparison.",
+  id: "ockham-ml-experimentation-workbench",
 
-    metrics: [
-      { label: "Models Implemented", value: "13" },
-      { label: "Problem Types", value: "Classification and Regression" },
-      { label: "Ranking Layers", value: "Score Ranking + Ockham Ranking" },
-      { label: "App Stack", value: "React + FastAPI" }
-    ],
+  title: "Ockham - ML Experimentation and Model Ranking Workbench",
 
-    techStack: [
-      "Python",
-      "FastAPI",
-      "React",
-      "Optuna",
-      "SQLite",
-      "LangChain",
-      "Ollama",
-      "Docker"
-    ],
+  shortDescription:
+    "A full-stack React + FastAPI application that guides tabular Machine Learning projects from raw datasets to defensible model recommendations, combining AI-agent-assisted preprocessing, experimentation and hyperparameter optimization with Optuna, analytical diagnostics, and evidence-based intelligent ranking.",
 
-    tags: [
-      "ML Engineering",
-      "Experimentation Platforms",
-      "LLM Applications",
-      "Model Evaluation"
-    ],
+  impactStatement:
+    "I developed a local-first ML engineering workbench that turns model selection into a traceable, comparable, and technically justifiable process, going beyond metric-only leaderboards by considering performance, simplicity, stability, explainability, scalability, and operational cost.",
 
-    links: {
-      github: "https://github.com/DuarteDizz/ockham",
-      blog: ""
-    },
+  problem:
+    "In real-world machine learning projects, choosing the best model rarely means selecting only the one with the highest score. The decision also involves stability, complexity, training time, inference cost, feature efficiency, explainability, and fit to the operational context. In addition, many failures happen before modeling, through poorly traceable decisions around data treatment, encoding, imputation, date handling, scaling, feature removal, and leakage prevention. Ockham was created to solve this problem: transforming a workflow that is usually scattered across notebooks and isolated scripts into a clear, auditable product experience oriented toward better technical decision-making.",
 
-    images: [
-      "https://i.ibb.co/dsZ7KXdj/hero-dashboard.png",
-      "https://i.ibb.co/GvsC4c4p/diagnostics-panel.png",
-      "https://i.ibb.co/wNv4HR8F/experiment-setup.png"
-    ],
+  approach:
+    "I built an end-to-end platform with a React, Vite, and Tailwind CSS frontend, and a FastAPI backend structured around clear domains such as datasets, preprocessing, modeling, experiments, ranking, persistence, and AI providers. The application allows users to upload CSV datasets, inspect metadata, generate deterministic column profiling, and build preprocessing plans with the support of specialist agents. These plans can be reviewed, edited, validated, previewed, materialized as new datasets, or attached directly to experiments. During modeling, the backend runs hyperparameter search with Optuna and cross-validation, wrapping preprocessing and the model inside scikit-learn pipelines to prevent data leakage. At the end, users compare results through two complementary views: the Score Ranking, focused on the primary metric, and the Ockham Ranking, focused on the most defensible choice based on a structured evidence bundle. The AI layer, with support for Ollama, OpenAI, and OpenAI-compatible providers, acts as a decision-support mechanism without hiding the technical criteria behind the recommendation.",
 
-    whatIdImprove: [
-      "Create 'Ockham Lab', an AI-assisted environment to recommend model usage based on dataset characteristics, with additional intelligent features over time.",
-      "Expand support for regression and classification models, as well as additional ML capabilities such as clustering.",
-      "Go beyond local LLMs and add support for API-based LLM providers.",
-      "Create an AI-assisted utility to preprocess datasets directly inside the app.",
-      "Support additional dataset formats and richer ingestion flows beyond CSV-only uploads."
-    ],
+  results:
+    "The result is a functional ML experimentation product for tabular data, with support for classification and regression, 17 implemented models, AI-agent-assisted preprocessing, persisted and editable preprocessing plans, materialization of transformed datasets, parallel model execution, runtime configuration of LLM providers, score-based ranking, Ockham ranking, and diagnostic panels for comparative result analysis. As a portfolio project, Ockham demonstrates strong ML engineering capabilities, pragmatic AI integration, modular architecture, concern for reproducibility, and focus on a more relevant question than simply 'which model performed best?': Which model is the most defensible choice for this problem?",
 
-    reproducibility:
-      "Clone the repository, create the environment file from .env.example, configure the backend and frontend variables, and run `docker compose up -d --build` for the full stack. For local development, the backend can be started with `uv run fastapi dev main.py` and the frontend with `npm run dev`.",
+  metrics: [
+    { label: "Implemented Models", value: "17" },
+    { label: "Problem Types", value: "Classification and Regression" },
+    { label: "Decision Layers", value: "Score Ranking + Ockham Ranking" },
+    { label: "Application Stack", value: "React + FastAPI" }
+  ],
 
-    featured: true,
-    caseStudy: false
-  }
+  techStack: [
+    "Python",
+    "FastAPI",
+    "React",
+    "Optuna",
+    "Scikit-learn",
+    "SQLite",
+    "LangChain",
+    "Strands Agents",
+    "Ollama",
+    "Docker"
+  ],
+
+  tags: [
+    "ML Engineering",
+    "MLOps",
+    "LLMs",
+    "Model Evaluation",
+    "AI Agents"
+  ],
+
+  links: {
+    github: "https://github.com/DuarteDizz/ockham",
+    blog: ""
+  },
+
+  images: [
+    "https://i.ibb.co/dsZ7KXdj/hero-dashboard.png",
+    "https://i.ibb.co/GvsC4c4p/diagnostics-panel.png",
+    "https://i.ibb.co/wNv4HR8F/experiment-setup.png"
+  ],
+
+  whatIdImprove: [
+    "Implement the 'Ockham Lab', an AI-assisted environment capable of recommending modeling strategies based on dataset characteristics and progressively incorporating new analytical capabilities.",
+    "Create a model recommendation layer based on dataset characteristics.",
+    "Add an Explainable AI layer to the final report using SHAP and LIME.",
+    "Create a model export feature using the ONNX standard.",
+    "Expand the machine learning capabilities catalog to include clustering, time series, automatic feature selection, and comparison between complete pipelines.",
+    "Evolve the local persistence layer from SQLite and filesystem storage to a more robust architecture with Postgres.",
+    "Support additional input formats and more advanced ingestion workflows beyond CSV files."
+  ],
+
+  reproducibility:
+    "Clone the repository, create the environment file from .env.example, review the backend, frontend, and LLM provider variables, and run `docker compose up -d --build` to start the full stack with frontend, backend, Ollama, and local persistence. For local development, the backend can be started with `uv sync` followed by `uv run fastapi dev main.py`, while the frontend can be run with `npm install` and `npm run dev`.",
+
+  featured: true,
+  caseStudy: false
+}
 
 ];
 

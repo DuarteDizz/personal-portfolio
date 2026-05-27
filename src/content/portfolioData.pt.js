@@ -303,24 +303,24 @@ export const projects = [
   id: "ockham-ml-experimentation-workbench",
   title: "Ockham - Workbench de Experimentação e Ranking de Modelos em ML",
   shortDescription:
-    "Aplicação full-stack em React + FastAPI para estruturar fluxos de experimentação em machine learning tabular, comparar modelos de forma interpretável e apoiar decisões com ranking baseado em evidências e recomendação assistida por LLM.",
+    "Aplicação full-stack em React + FastAPI que conduz projetos de Machine Learning tabular do dataset bruto à recomendação defensável de modelo, combinando preprocessing assistido por agentes de IA, experimentação e otimização de hiperparâmetros com Optuna, diagnósticos analíticos e ranking inteligente baseado em evidências.",
 
   impactStatement:
-    "Concebi e desenvolvi um workbench de experimentação em machine learning com posicionamento orientado a decisão, superando leaderboards puramente métricos ao integrar Optuna, diagnósticos analíticos e uma camada de ranking baseada em evidências em uma stack reprodutível e local-first.",
-
+    "Desenvolvi um workbench local-first de engenharia de ML que transforma a escolha de modelos em um processo rastreável, comparável e tecnicamente justificável, superando leaderboards puramente métricos ao considerar desempenho, simplicidade, estabilidade, explicabilidade, escalabilidade e custo operacional.",
+  
   problem:
-    "Em cenários reais de machine learning, a escolha do melhor modelo raramente depende apenas do maior score. Ainda assim, grande parte dos fluxos de experimentação permanece restrita a notebooks, scripts isolados ou tabelas planas de métricas, dificultando a análise de trade-offs e a construção de uma justificativa técnica mais robusta. O Ockham nasceu para transformar esse processo em uma experiência guiada de produto, centralizando execução, comparação, diagnóstico e suporte à decisão em uma única interface.",
-
+    "Em projetos reais de machine learning, escolher o melhor modelo raramente significa escolher apenas o maior score. A decisão também envolve estabilidade, complexidade, tempo de treino, custo de inferência, eficiência no uso de variáveis, explicabilidade e aderência ao contexto operacional. Além disso, muitas falhas surgem antes da modelagem, em decisões pouco rastreáveis de tratamento de dados, encoding, imputação, datas, scaling, remoção de features e prevenção de vazamento. O Ockham foi criado para resolver esse problema: transformar um fluxo normalmente disperso em notebooks e scripts isolados em uma experiência de produto clara, auditável e orientada à melhor decisão técnica.",
+  
   approach:
-    "Desenvolvi uma plataforma ponta a ponta com frontend em React e backend em FastAPI voltada à experimentação tabular a partir de datasets em CSV. A solução contempla upload de dados, configuração de experimentos, busca e avaliação de modelos com Optuna, ranking por desempenho e uma camada estruturada de evidências que compara os candidatos sob múltiplas perspectivas, incluindo desempenho preditivo, comportamento computacional, eficiência no uso de variáveis e simplicidade estrutural. Como diferencial, adicionei uma trilha opcional com LangChain + Ollama para permitir que uma LLM avalie um payload estruturado e recomende a alternativa mais defensável entre os modelos analisados.",
+    "Construí uma plataforma ponta a ponta com frontend em React, Vite e Tailwind CSS, e backend em FastAPI estruturado por domínios como datasets, preprocessing, modelagem, experimentos, ranking, persistência e provedores de IA. A aplicação permite carregar datasets CSV, inspecionar metadados, gerar profiling determinístico por coluna e construir planos de preprocessing com apoio de agentes especialistas. Esses planos podem ser revisados, editados, validados, pré-visualizados, materializados como novos datasets ou acoplados diretamente aos experimentos. Na etapa de modelagem, o backend executa busca de hiperparâmetros com Optuna e validação cruzada, encapsulando preprocessing e modelo em pipelines scikit-learn para evitar vazamento de dados. Ao final, o usuário compara os resultados por duas lentes complementares: o Score Ranking, orientado à métrica primária, e o Ockham Ranking, orientado à escolha mais defensável a partir de um conjunto estruturado de evidências. A camada de IA, com suporte a Ollama, OpenAI e provedores OpenAI-compatible, atua como apoio à decisão sem ocultar os critérios técnicos utilizados.",
 
   results:
-    "O resultado foi um produto enxuto, mas concebido com mentalidade de produção, capaz de suportar fluxos de classificação e regressão, persistir datasets e metadados localmente, disponibilizar leaderboards e painéis diagnósticos e oferecer duas lentes complementares de decisão: score ranking e Ockham ranking. Como peça de portfólio, o projeto evidencia capacidade de engenharia de ML full-stack, preocupação com reprodutibilidade e foco em comparabilidade interpretável entre modelos.",
+    "O resultado foi um produto funcional de experimentação em ML tabular, com suporte a classificação e regressão, 17 modelos implementados, pré-processamento assistido por agentes de IA, planos persistidos e editáveis, materialização de datasets transformados, execução paralelizada de modelos, configuração runtime de provedores de LLM, ranking por score, ranking Ockham e painéis diagnósticos para análise comparativa dos resultados. Como projeto de portfólio, o Ockham demonstra domínio de engenharia de ML, integração pragmática de IA, arquitetura modular, preocupação com reprodutibilidade e foco em uma pergunta mais relevante que simplesmente 'qual modelo performou melhor?': Qual modelo é a escolha mais defensável para este problema?",
 
   metrics: [
-    { label: "Modelos Implementados", value: "13" },
+    { label: "Modelos Implementados", value: "17" },
     { label: "Tipos de Problema", value: "Classificação e Regressão" },
-    { label: "Camadas de Ranking", value: "Score Ranking + Ockham Ranking" },
+    { label: "Camadas de Decisão", value: "Score Ranking + Ockham Ranking" },
     { label: "Stack da Aplicação", value: "React + FastAPI" }
   ],
 
@@ -329,17 +329,20 @@ export const projects = [
     "FastAPI",
     "React",
     "Optuna",
+    "Scikit Learn",
     "SQLite",
     "LangChain",
+    "Strands Agents",
     "Ollama",
     "Docker"
   ],
 
   tags: [
     "Engenharia de ML",
-    "Plataformas de Experimentação",
-    "Aplicações com LLM",
-    "Avaliação de Modelos"
+    "MLOps",
+    "LLMs",
+    "Avaliação de Modelos",
+    "Agentes de IA"
   ],
 
   links: {
@@ -355,15 +358,16 @@ export const projects = [
 
   whatIdImprove: [
     "Implementar o 'Ockham Lab', um ambiente assistido por IA capaz de recomendar estratégias de modelagem com base nas características do dataset e incorporar novas funcionalidades analíticas ao longo do tempo.",
-    "Ampliar o catálogo de modelos de regressão e classificação, além de incluir novas capacidades de machine learning, como clustering.",
-    "Expandir o suporte além de LLMs locais, incorporando provedores de LLM via API.",
-    "Adicionar uma funcionalidade assistida por IA para pré-processamento de datasets diretamente na aplicação.",
+    "Criar uma camada de recomendação de modelos baseado em características do dataset.",
+    "Adicionar camada de IA Explicável (XAI) ao relatório final com SHAP e LIME.",
+    "Criar funcionalidade de exportação de modelos utilizando padrão ONNX.",
+    "Ampliar o catálogo de capacidades de machine learning, incluindo clustering, séries temporais, seleção automática de features e comparação entre pipelines completos.",
+    "Evoluir a persistência local baseada em SQLite e filesystem para uma arquitetura mais robusta com Postgres.",
     "Suportar formatos adicionais de entrada e fluxos de ingestão mais avançados além de arquivos CSV."
   ],
 
   reproducibility:
-    "Clone o repositório, crie o arquivo de ambiente a partir do .env.example, configure as variáveis do backend e do frontend e execute `docker compose up -d --build` para subir a stack completa. Para desenvolvimento local, o backend pode ser iniciado com `uv run fastapi dev main.py` e o frontend com `npm run dev`.",
-
+     "Clone o repositório, crie o arquivo de ambiente a partir do .env.example, revise as variáveis do backend, frontend e provedores de LLM e execute `docker compose up -d --build` para subir a stack completa com frontend, backend, Ollama e persistência local. Para desenvolvimento local, o backend pode ser iniciado com `uv sync` seguido de `uv run fastapi dev main.py`, enquanto o frontend pode ser executado com `npm install` e `npm run dev`.",
   featured: true,
   caseStudy: false
   }
